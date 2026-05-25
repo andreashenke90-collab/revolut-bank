@@ -2,68 +2,146 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revolut Bank</title>
+
 <style>
+
 body{
 font-family:Arial,sans-serif;
-background-image:url("finance-bg.png");
+background-image:url("https://images.unsplash.com/photo-1520607162513-77705c0f0d4a");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
+background-attachment:fixed;
 color:white;
 text-align:center;
-padding:40px;
+padding:20px;
 }
+
+nav{
+padding:15px;
+background:rgba(0,0,0,0.7);
+border-radius:15px;
+margin-bottom:20px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:8px;
+font-weight:bold;
+}
+
+h1{
+font-size:38px;
+}
+
 button{
-background:#000;
-color:#fff;
+background:black;
+color:white;
 padding:12px 24px;
 border:none;
 border-radius:12px;
+font-size:16px;
+cursor:pointer;
 }
+
+button:hover{
+transform:scale(1.05);
+}
+
+.card{
+background:rgba(255,255,255,0.92);
+color:black;
+padding:20px;
+margin:20px auto;
+border-radius:20px;
+max-width:450px;
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+
 input{
-width:80%;
+width:90%;
 padding:12px;
 margin:8px;
 border:1px solid #ddd;
 border-radius:10px;
+font-size:16px;
 }
-.card{
-border:1px solid #ddd;
-padding:20px;
-margin:20px;
-border-radius:20px;
-}
-body{
-card
-background:rgba(255,255,255,0.9);
-color:black;
-}
+
 </style>
+
 </head>
+
 <body>
-<nav style="padding:20px;border-bottom:1px solid #ddd;">
+
+<nav>
 <a href="#">Accueil</a> |
 <a href="#">Prêts</a> |
 <a href="#">Cartes</a> |
 <a href="#">Connexion</a> |
 <a href="#">Inscription</a>
 </nav>
+
 <h1>Revolut Bank</h1>
-<p>Banque digitale moderne</p>
+<p>Banque digitale moderne • Crédit • Finance • Paiements</p>
 
 <div class="card">
 <h2>Demande de prêt</h2>
 <p>Effectuez votre demande rapidement.</p>
-<button>Demander un prêt</button>
+<button onclick="pret()">Demander un prêt</button>
 </div>
 
 <div class="card">
 <h2>Connexion</h2>
-<input type="email" placeholder="Votre email"><br><br>
-<input type="password" placeholder="Mot de passe"><br><br>
+
+<input type="email" placeholder="Votre email">
+
+<input type="password" placeholder="Mot de passe">
+
 <button onclick="connexion()">Se connecter</button>
+
 </div>
+
+<div class="card">
+<h2>Créer un compte</h2>
+
+<input type="text" placeholder="Nom complet">
+
+<input type="email" placeholder="Email">
+
+<input type="password" placeholder="Créer mot de passe">
+
+<button onclick="inscription()">S'inscrire</button>
+
+</div>
+
+<div class="card">
+<h2>Paiements & Cartes</h2>
+<p>Gérez vos paiements, cartes et transactions.</p>
+<button onclick="cartes()">Mes cartes</button>
+</div>
+
+<script>
+
+function connexion(){
+alert("Connexion en cours...");
+}
+
+function inscription(){
+alert("Compte créé avec succès");
+}
+
+function pret(){
+alert("Ouverture de la demande de prêt...");
+}
+
+function cartes(){
+alert("Chargement des cartes...");
+}
+
+</script>
+
 </body>
 </html>
