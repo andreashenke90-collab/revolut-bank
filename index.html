@@ -1,73 +1,158 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Revolut Bank</title>
 
 <style>
 
-body{
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial,sans-serif;
-background-image:url("https://images.unsplash.com/photo-1520607162513-77705c0f0d4a");
+}
+
+body{
+background-image:
+linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+url("fond-finance.jpg");
+
 background-size:cover;
 background-position:center;
-background-repeat:no-repeat;
 background-attachment:fixed;
+
 color:white;
-text-align:center;
-padding:20px;
 }
 
 nav{
-padding:15px;
-background:rgba(0,0,0,0.7);
-border-radius:15px;
-margin-bottom:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+background:rgba(0,0,0,0.8);
+backdrop-filter:blur(10px);
 }
 
-nav a{
+.logo{
+font-size:28px;
+font-weight:bold;
+color:gold;
+}
+
+.menu a{
 color:white;
 text-decoration:none;
-margin:8px;
-font-weight:bold;
+margin:15px;
 }
 
-h1{
-font-size:38px;
-}
-
-button{
-background:black;
-color:white;
-padding:12px 24px;
+.btn{
+background:gold;
+color:black;
+padding:12px 25px;
 border:none;
-border-radius:12px;
-font-size:16px;
+border-radius:30px;
+font-weight:bold;
 cursor:pointer;
 }
 
-button:hover{
-transform:scale(1.05);
+.hero{
+text-align:center;
+padding:90px 20px;
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+.hero span{
+color:gold;
+}
+
+.hero p{
+font-size:20px;
+margin-bottom:25px;
+}
+
+.container{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
+padding:40px;
+
 }
 
 .card{
-background:rgba(255,255,255,0.92);
-color:black;
-padding:20px;
-margin:20px auto;
-border-radius:20px;
-max-width:450px;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
+
+background:rgba(0,0,0,0.70);
+
+padding:25px;
+
+border-radius:25px;
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,.2);
+
+}
+
+.card h2{
+
+margin-bottom:15px;
+color:gold;
+
 }
 
 input{
-width:90%;
-padding:12px;
-margin:8px;
-border:1px solid #ddd;
+
+width:100%;
+padding:15px;
+
+margin-top:10px;
+margin-bottom:10px;
+
+border:none;
 border-radius:10px;
-font-size:16px;
+
+}
+
+.bankcard{
+
+height:200px;
+
+border-radius:20px;
+
+padding:25px;
+
+background:linear-gradient(
+135deg,
+black,
+#333,
+gold
+);
+
+margin-top:20px;
+
+}
+
+.number{
+font-size:25px;
+margin-top:50px;
+}
+
+.footer{
+
+margin-top:50px;
+padding:30px;
+
+text-align:center;
+
+background:black;
+
 }
 
 </style>
@@ -77,71 +162,143 @@ font-size:16px;
 <body>
 
 <nav>
-<a href="#">Accueil</a> |
-<a href="#">Prêts</a> |
-<a href="#">Cartes</a> |
-<a href="#">Connexion</a> |
-<a href="#">Inscription</a>
-</nav>
 
-<h1>Revolut Bank</h1>
-<p>Banque digitale moderne • Crédit • Finance • Paiements</p>
-
-<div class="card">
-<h2>Demande de prêt</h2>
-<p>Effectuez votre demande rapidement.</p>
-<button onclick="pret()">Demander un prêt</button>
+<div class="logo">
+REVOLUT BANK
 </div>
 
+<div class="menu">
+
+<a href="#">Accueil</a>
+
+<a href="#">Prêts</a>
+
+<a href="#">Cartes</a>
+
+<a href="#">Paiements</a>
+
+<a href="#">Connexion</a>
+
+</div>
+
+<button class="btn">
+Inscription
+</button>
+
+</nav>
+
+<section class="hero">
+
+<h1>
+
+VOTRE AVENIR<br>
+
+<span>NOTRE PRIORITÉ</span>
+
+</h1>
+
+<p>
+
+Des solutions financières modernes sécurisées partout dans le monde
+
+</p>
+
+<button class="btn">
+Commencer
+</button>
+
+</section>
+
+
+<div class="container">
+
 <div class="card">
-<h2>Connexion</h2>
+
+<h2>💰 DEMANDE DE PRÊT</h2>
+
+<p>
+
+Obtenez un crédit rapidement selon vos besoins.
+
+</p>
+
+<br>
+
+<button class="btn">
+
+Demander un prêt
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>🔒 CONNEXION</h2>
 
 <input type="email" placeholder="Votre email">
 
 <input type="password" placeholder="Mot de passe">
 
-<button onclick="connexion()">Se connecter</button>
+<button class="btn">
+
+Se connecter
+
+</button>
 
 </div>
 
-<div class="card">
-<h2>Créer un compte</h2>
 
-<input type="text" placeholder="Nom complet">
+<div class="card">
+
+<h2>👤 CRÉER UN COMPTE</h2>
+
+<input type="text" placeholder="Nom">
 
 <input type="email" placeholder="Email">
 
 <input type="password" placeholder="Créer mot de passe">
 
-<button onclick="inscription()">S'inscrire</button>
+<button class="btn">
+
+S'inscrire
+
+</button>
 
 </div>
+
 
 <div class="card">
-<h2>Paiements & Cartes</h2>
-<p>Gérez vos paiements, cartes et transactions.</p>
-<button onclick="cartes()">Mes cartes</button>
+
+<h2>💳 CARTE BANCAIRE</h2>
+
+<div class="bankcard">
+
+REVOLUT BANK
+
+<div class="number">
+
+1234 5678 9012 3456
+
 </div>
 
-<script>
+<br>
 
-function connexion(){
-alert("Connexion en cours...");
-}
+Titulaire: CLIENT
 
-function inscription(){
-alert("Compte créé avec succès");
-}
+</div>
 
-function pret(){
-alert("Ouverture de la demande de prêt...");
-}
+</div>
 
-function cartes(){
-alert("Chargement des cartes...");
-}
+</div>
 
-</script>
+
+<div class="footer">
+
+© 2026 Revolut Bank — Tous droits réservés
+
+</div>
 
 </body>
 </html>
