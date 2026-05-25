@@ -6,14 +6,9 @@
 <title>Revolut Bank</title>
 <style>
 body{
-font-family:Arial,sans-serif;
-background-image:url("https://images.unsplash.com/photo-1559526324-593bc073d938");
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-color:white;
-text-align:center;
-padding:40px;
+<video autoplay muted loop id="bg-video">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-businessman-analyzing-financial-data-43554-large.mp4" type="video/mp4">
+</video>
 }
 button{
 background:#000;
@@ -34,6 +29,19 @@ border:1px solid #ddd;
 padding:20px;
 margin:20px;
 border-radius:20px;
+}
+#bg-video{
+position:fixed;
+right:0;
+bottom:0;
+min-width:100%;
+min-height:100%;
+z-index:-1;
+object-fit:cover;
+}
+
+body{
+color:white;
 }
 </style>
 </head>
