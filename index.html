@@ -5,6 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revolut Bank 🏦</title>
 
+<style>
+body{
+background:black;
+color:white;
+text-align:center;
+font-family:Arial;
+}
+
+input,button{
+padding:12px;
+margin:5px;
+border-radius:10px;
+border:none;
+}
+
+button{
+background:gold;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Revolut Bank 🏦</h1>
+
+<div>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Mot de passe">
+<br>
+<button onclick="register()">Créer compte</button>
+<button onclick="login()">Connexion</button>
+</div>
+
+<div id="appDiv" style="display:none">
+<h2 id="userName"></h2>
+<h3>💼 Solde : <span id="balance">0</span> €</h3>
+
+<button onclick="logout()">Déconnexion</button>
+
+<ul id="history"></ul>
+</div>
+
+<!-- 🔥 FIREBASE -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -14,7 +60,7 @@ from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ✅ TA VRAIE CONFIG (corrigée)
+// ✅ CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
   authDomain: "revolut-bank-a462c.firebaseapp.com",
@@ -30,13 +76,24 @@ const db = getFirestore(app);
 
 // INSCRIPTION
 window.register = async function(){
+
+  if(!email.value.includes("@")){
+    alert("Email invalide !");
+    return;
+  }
+
+  if(password.value.length < 6){
+    alert("Mot de passe trop court !");
+    return;
+  }
+
   try{
     let userCred = await createUserWithEmailAndPassword(auth, email.value, password.value);
 
     await setDoc(doc(db, "users", userCred.user.uid), {
       email: email.value,
       balance: 1000,
-      history: []
+      history: ["Compte créé"]
     });
 
     alert("Compte créé !");
@@ -54,7 +111,7 @@ window.login = async function(){
   }
 }
 
-// AUTH
+// AUTH STATE
 onAuthStateChanged(auth, async (user)=>{
   if(user){
     appDiv.style.display="block";
@@ -87,33 +144,6 @@ window.logout = function(){
 }
 
 </script>
-
-<style>
-body{background:black;color:white;text-align:center;font-family:Arial;}
-input,button{padding:10px;margin:5px;border-radius:8px;border:none;}
-</style>
-
-</head>
-
-<body>
-
-<h1>Revolut Bank 🏦</h1>
-
-<div>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Mot de passe">
-<button onclick="register()">Créer compte</button>
-<button onclick="login()">Connexion</button>
-</div>
-
-<div id="appDiv" style="display:none">
-<h2 id="userName"></h2>
-<h3>💼 Solde : <span id="balance">0</span> €</h3>
-
-<button onclick="logout()">Déconnexion</button>
-
-<ul id="history"></ul>
-</div>
 
 </body>
 </html>
