@@ -3,26 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Revolut + Loan</title>
+<title>Fintech Premium UI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ===== GLOBAL ===== */
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+/* ================= GLOBAL ================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
 
 body{
-background:#0b1020;
+background:#0a0f1e;
 color:white;
 display:flex;
 height:100vh;
 overflow:hidden;
 }
 
-/* ===== SIDEBAR ===== */
+/* ================= SIDEBAR ================= */
 .sidebar{
-width:250px;
+width:280px;
 background:#0f172a;
 padding:20px;
 display:flex;
@@ -31,50 +36,113 @@ gap:12px;
 }
 
 .logo{
-font-size:20px;
+font-size:22px;
 font-weight:700;
 margin-bottom:10px;
 }
 
 .nav{
 padding:12px;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
 background:transparent;
 transition:.2s;
 }
 
-.nav:hover{background:#1e293b}
+.nav:hover{
+background:#1e293b;
+}
 
-/* ===== MAIN ===== */
+/* ================= MAIN ================= */
 .main{
 flex:1;
-padding:25px;
+padding:30px;
 overflow:auto;
 }
 
-/* ===== CARDS ===== */
-.card{
-background:#111827;
-padding:20px;
-border-radius:15px;
+/* ================= HEADER ================= */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
 margin-bottom:20px;
 }
 
-.balance{
-font-size:40px;
+.big-balance{
+font-size:46px;
 font-weight:700;
 }
 
-/* ===== GRID ===== */
+/* ================= FINANCE RINGS ================= */
+.rings{
+display:flex;
+gap:15px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.circle{
+width:120px;
+height:120px;
+border-radius:50%;
+background:linear-gradient(135deg,#6c63ff,#00d4ff);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+transition:.3s;
+}
+
+.circle:hover{
+transform:scale(1.05);
+}
+
+.circle h3{
+font-size:14px;
+opacity:.9;
+}
+
+.circle p{
+font-size:18px;
+font-weight:700;
+}
+
+/* ================= GRID ================= */
 .grid{
 display:grid;
 grid-template-columns:2fr 1fr;
 gap:20px;
+margin-top:20px;
 }
 
-/* ===== LOAN FORM ===== */
-input,select{
+/* ================= CARDS ================= */
+.card{
+background:#111827;
+padding:20px;
+border-radius:18px;
+}
+
+/* ================= HISTORY ================= */
+ul{
+list-style:none;
+}
+
+li{
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+/* ================= LOAN WIZARD ================= */
+.step{
+display:none;
+}
+
+.step.active{
+display:block;
+}
+
+input{
 width:100%;
 padding:12px;
 margin:8px 0;
@@ -90,30 +158,27 @@ border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
-margin-top:8px;
+margin-top:10px;
 }
 
-.primary{background:#6366f1;color:white;}
-.secondary{background:#06b6d4;color:white;}
+.primary{background:#6c63ff;color:white;}
+.secondary{background:#00d4ff;color:white;}
 
-ul{list-style:none;}
-li{padding:10px;border-bottom:1px solid rgba(255,255,255,0.1);}
-
-/* ===== LOGIN ===== */
+/* ================= LOGIN ================= */
 .login{
 position:fixed;
 inset:0;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#0b1020;
+background:#0a0f1e;
 }
 
 .box{
-width:380px;
+width:400px;
 background:#111827;
 padding:25px;
-border-radius:15px;
+border-radius:16px;
 }
 
 .hidden{display:none;}
@@ -134,28 +199,52 @@ border-radius:15px;
 
 <button class="primary" onclick="register()">Créer compte</button>
 <button class="secondary" onclick="login()">Connexion</button>
+
 </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar hidden" id="sidebar">
+
 <div class="logo">REVOLUT+</div>
 
 <div class="nav" onclick="show('home')">🏠 Dashboard</div>
-<div class="nav" onclick="show('loan')">💸 Loan Request</div>
-<div class="nav" onclick="show('cards')">💳 Card</div>
+<div class="nav" onclick="show('loan')">💸 Loan</div>
+<div class="nav" onclick="show('cards')">💳 Cards</div>
 <div class="nav" onclick="logout()">🚪 Logout</div>
+
 </div>
 
 <!-- MAIN -->
 <div class="main hidden" id="main">
 
-<!-- DASHBOARD -->
+<!-- HOME -->
 <div id="home">
 
-<div class="card">
-<h3>Balance</h3>
-<div class="balance">€ <span id="balance">0</span></div>
+<div class="header">
+<h2>Dashboard</h2>
+</div>
+
+<div class="big-balance">€ <span id="balance">0</span></div>
+
+<!-- FINANCE RINGS -->
+<div class="rings">
+
+<div class="circle">
+<h3>Cash</h3>
+<p>€1.2K</p>
+</div>
+
+<div class="circle">
+<h3>Credit</h3>
+<p>€2.5K</p>
+</div>
+
+<div class="circle">
+<h3>Loan</h3>
+<p>Active</p>
+</div>
+
 </div>
 
 <div class="grid">
@@ -167,35 +256,52 @@ border-radius:15px;
 
 <div class="card">
 <h3>Actions</h3>
+
 <button class="primary" onclick="deposit()">+ Dépôt 50€</button>
 <button class="secondary" onclick="transfer()">- Transfert 20€</button>
-</div>
 
 </div>
 
 </div>
 
-<!-- LOAN SYSTEM -->
-<div id="loan" class="hidden card">
+</div>
+
+<!-- LOAN WIZARD -->
+<div id="loan" class="card">
 
 <h2>Loan Request</h2>
 
-<input id="amount" type="number" placeholder="Montant du prêt (€)">
-<input id="months" type="number" placeholder="Durée (mois)">
-<input id="income" type="number" placeholder="Revenu mensuel (€)">
+<div id="step1" class="step active">
+<h3>Step 1 - Montant</h3>
+<input id="amount" type="number" placeholder="Montant (€)">
+<button class="primary" onclick="nextStep(2)">Suivant</button>
+</div>
 
-<button class="primary" onclick="calculateLoan()">Calculer</button>
+<div id="step2" class="step">
+<h3>Step 2 - Durée</h3>
+<input id="months" type="number" placeholder="Durée (mois)">
+<button class="primary" onclick="nextStep(3)">Suivant</button>
+</div>
+
+<div id="step3" class="step">
+<h3>Step 3 - Revenu</h3>
+<input id="income" type="number" placeholder="Revenu mensuel">
 <button class="secondary" onclick="submitLoan()">Envoyer demande</button>
+</div>
 
 <h3 id="loanResult"></h3>
 
 </div>
 
 <!-- CARDS -->
-<div id="cards" class="hidden card">
+<div id="cards" class="card hidden">
 
 <h2>Carte virtuelle</h2>
-<p id="cardNumber">**** **** **** ****</p>
+
+<div class="circle">
+<h3>Card</h3>
+<p id="cardNumber">**** ****</p>
+</div>
 
 </div>
 
@@ -238,17 +344,13 @@ const db = getFirestore(app);
 
 let currentUser = null;
 
-// ===== REGISTER =====
+// ================= AUTH =================
 window.register = async () => {
-let user = await createUserWithEmailAndPassword(
-auth,
-email.value,
-password.value
-);
+await createUserWithEmailAndPassword(auth,email.value,password.value);
 
-let card = "4532 " + Math.floor(Math.random()*9999) + " **** ****";
+let card = "4532 " + Math.floor(Math.random()*9999);
 
-await setDoc(doc(db,"users",user.user.uid),{
+await setDoc(doc(db,"users",auth.currentUser.uid),{
 email:email.value,
 balance:1000,
 card,
@@ -256,16 +358,14 @@ history:["Compte créé"]
 });
 };
 
-// ===== LOGIN =====
 window.login = async () => {
 await signInWithEmailAndPassword(auth,email.value,password.value);
 };
 
-// ===== LOGOUT =====
 window.logout = () => signOut(auth);
 
-// ===== AUTH =====
-onAuthStateChanged(auth,async(user)=>{
+// ================= AUTH STATE =================
+onAuthStateChanged(auth, async(user)=>{
 if(user){
 currentUser=user;
 
@@ -277,7 +377,7 @@ loadUser(user);
 }
 });
 
-// ===== LOAD USER =====
+// ================= LOAD =================
 async function loadUser(user){
 let snap = await getDoc(doc(db,"users",user.uid));
 let data = snap.data();
@@ -287,7 +387,7 @@ history.innerHTML=data.history.map(h=>`<li>${h}</li>`).join("");
 cardNumber.innerText=data.card;
 }
 
-// ===== DEPOSIT =====
+// ================= FINANCE =================
 window.deposit = async () => {
 let ref = doc(db,"users",currentUser.uid);
 let snap = await getDoc(ref);
@@ -301,7 +401,6 @@ history:arrayUnion("+50€ dépôt")
 loadUser(currentUser);
 };
 
-// ===== TRANSFER =====
 window.transfer = async () => {
 let ref = doc(db,"users",currentUser.uid);
 let snap = await getDoc(ref);
@@ -315,18 +414,12 @@ history:arrayUnion("-20€ transfert")
 loadUser(currentUser);
 };
 
-// ===== LOAN CALCULATOR =====
-window.calculateLoan = () => {
-let amount = Number(amount.value);
-let months = Number(months.value);
-
-let rate = 0.05;
-let monthly = (amount * rate / 12) / (1 - Math.pow(1 + rate/12, -months));
-
-loanResult.innerText = "Mensualité: € " + monthly.toFixed(2);
+// ================= LOAN WIZARD =================
+window.nextStep = (step) => {
+document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+document.getElementById('step'+step).classList.add('active');
 };
 
-// ===== LOAN SUBMIT =====
 window.submitLoan = async () => {
 await addDoc(collection(db,"loans"),{
 uid:currentUser.uid,
@@ -338,16 +431,6 @@ date:Date.now()
 });
 
 loanResult.innerText="Demande envoyée ✔";
-};
-
-// ===== NAVIGATION =====
-window.show = (page) => {
-
-["home","loan","cards"].forEach(p=>{
-document.getElementById(p).classList.add("hidden");
-});
-
-document.getElementById(page).classList.remove("hidden");
 };
 
 </script>
