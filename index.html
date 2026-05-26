@@ -3,19 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Premium UI</title>
+<title>Fintech Ultra Fast</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= GLOBAL ================= */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
 
 body{
 background:#0a0f1e;
@@ -25,127 +19,85 @@ height:100vh;
 overflow:hidden;
 }
 
-/* ================= SIDEBAR ================= */
+/* SIDEBAR */
 .sidebar{
-width:280px;
+width:260px;
 background:#0f172a;
 padding:20px;
 display:flex;
 flex-direction:column;
-gap:12px;
-}
-
-.logo{
-font-size:22px;
-font-weight:700;
-margin-bottom:10px;
+gap:10px;
 }
 
 .nav{
 padding:12px;
-border-radius:12px;
+border-radius:10px;
 cursor:pointer;
-background:transparent;
 transition:.2s;
 }
 
-.nav:hover{
-background:#1e293b;
-}
+.nav:hover{background:#1e293b}
 
-/* ================= MAIN ================= */
+/* MAIN */
 .main{
 flex:1;
-padding:30px;
+padding:25px;
 overflow:auto;
 }
 
-/* ================= HEADER ================= */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
+/* UI */
+.card{
+background:#111827;
+padding:18px;
+border-radius:14px;
+margin-bottom:15px;
 }
 
-.big-balance{
-font-size:46px;
+.big{
+font-size:42px;
 font-weight:700;
 }
 
-/* ================= FINANCE RINGS ================= */
+/* FINANCE RINGS */
 .rings{
 display:flex;
-gap:15px;
-margin:20px 0;
+gap:12px;
 flex-wrap:wrap;
+margin:15px 0;
 }
 
 .circle{
-width:120px;
-height:120px;
+width:110px;
+height:110px;
 border-radius:50%;
 background:linear-gradient(135deg,#6c63ff,#00d4ff);
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-box-shadow:0 10px 30px rgba(0,0,0,.4);
-transition:.3s;
 }
 
-.circle:hover{
-transform:scale(1.05);
+/* LOGIN */
+.login{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0a0f1e;
 }
 
-.circle h3{
-font-size:14px;
-opacity:.9;
-}
-
-.circle p{
-font-size:18px;
-font-weight:700;
-}
-
-/* ================= GRID ================= */
-.grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
-margin-top:20px;
-}
-
-/* ================= CARDS ================= */
-.card{
+.box{
+width:360px;
 background:#111827;
 padding:20px;
-border-radius:18px;
-}
-
-/* ================= HISTORY ================= */
-ul{
-list-style:none;
-}
-
-li{
-padding:10px;
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-/* ================= LOAN WIZARD ================= */
-.step{
-display:none;
-}
-
-.step.active{
-display:block;
+border-radius:14px;
 }
 
 input{
 width:100%;
 padding:12px;
-margin:8px 0;
+margin:6px 0;
 border-radius:10px;
 border:none;
 background:#0f172a;
@@ -158,28 +110,11 @@ border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
-margin-top:10px;
+margin-top:8px;
 }
 
 .primary{background:#6c63ff;color:white;}
 .secondary{background:#00d4ff;color:white;}
-
-/* ================= LOGIN ================= */
-.login{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#0a0f1e;
-}
-
-.box{
-width:400px;
-background:#111827;
-padding:25px;
-border-radius:16px;
-}
 
 .hidden{display:none;}
 
@@ -192,7 +127,7 @@ border-radius:16px;
 <!-- LOGIN -->
 <div class="login" id="loginPage">
 <div class="box">
-<h2>Fintech Login</h2>
+<h2>Fintech Ultra Fast</h2>
 
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Mot de passe">
@@ -205,49 +140,28 @@ border-radius:16px;
 
 <!-- SIDEBAR -->
 <div class="sidebar hidden" id="sidebar">
-
-<div class="logo">REVOLUT+</div>
-
-<div class="nav" onclick="show('home')">🏠 Dashboard</div>
-<div class="nav" onclick="show('loan')">💸 Loan</div>
-<div class="nav" onclick="show('cards')">💳 Cards</div>
+<div class="nav" onclick="navigate('home')">🏠 Dashboard</div>
+<div class="nav" onclick="navigate('loan')">💸 Loan</div>
+<div class="nav" onclick="navigate('cards')">💳 Cards</div>
 <div class="nav" onclick="logout()">🚪 Logout</div>
-
 </div>
 
 <!-- MAIN -->
 <div class="main hidden" id="main">
 
 <!-- HOME -->
-<div id="home">
+<div id="home" class="page">
 
-<div class="header">
-<h2>Dashboard</h2>
+<div class="card">
+<h2>Balance</h2>
+<div class="big">€ <span id="balance">0</span></div>
 </div>
 
-<div class="big-balance">€ <span id="balance">0</span></div>
-
-<!-- FINANCE RINGS -->
 <div class="rings">
-
-<div class="circle">
-<h3>Cash</h3>
-<p>€1.2K</p>
+<div class="circle">💳<br><b>Credit</b></div>
+<div class="circle">💰<br><b>Cash</b></div>
+<div class="circle">📊<br><b>Loan</b></div>
 </div>
-
-<div class="circle">
-<h3>Credit</h3>
-<p>€2.5K</p>
-</div>
-
-<div class="circle">
-<h3>Loan</h3>
-<p>Active</p>
-</div>
-
-</div>
-
-<div class="grid">
 
 <div class="card">
 <h3>Historique</h3>
@@ -255,52 +169,37 @@ border-radius:16px;
 </div>
 
 <div class="card">
-<h3>Actions</h3>
-
-<button class="primary" onclick="deposit()">+ Dépôt 50€</button>
-<button class="secondary" onclick="transfer()">- Transfert 20€</button>
-
+<button class="primary" onclick="deposit()">+50€</button>
+<button class="secondary" onclick="transfer()">-20€</button>
 </div>
 
 </div>
 
+<!-- LOAN -->
+<div id="loan" class="page hidden">
+
+<div class="card">
+<h2>Loan System</h2>
+
+<input id="amount" placeholder="Montant">
+<input id="months" placeholder="Durée">
+<input id="income" placeholder="Revenu">
+
+<button class="primary" onclick="calcLoan()">Calculer</button>
+<button class="secondary" onclick="sendLoan()">Envoyer</button>
+
+<h3 id="result"></h3>
+
 </div>
-
-<!-- LOAN WIZARD -->
-<div id="loan" class="card">
-
-<h2>Loan Request</h2>
-
-<div id="step1" class="step active">
-<h3>Step 1 - Montant</h3>
-<input id="amount" type="number" placeholder="Montant (€)">
-<button class="primary" onclick="nextStep(2)">Suivant</button>
-</div>
-
-<div id="step2" class="step">
-<h3>Step 2 - Durée</h3>
-<input id="months" type="number" placeholder="Durée (mois)">
-<button class="primary" onclick="nextStep(3)">Suivant</button>
-</div>
-
-<div id="step3" class="step">
-<h3>Step 3 - Revenu</h3>
-<input id="income" type="number" placeholder="Revenu mensuel">
-<button class="secondary" onclick="submitLoan()">Envoyer demande</button>
-</div>
-
-<h3 id="loanResult"></h3>
 
 </div>
 
 <!-- CARDS -->
-<div id="cards" class="card hidden">
+<div id="cards" class="page hidden">
 
-<h2>Carte virtuelle</h2>
-
-<div class="circle">
-<h3>Card</h3>
-<p id="cardNumber">**** ****</p>
+<div class="card">
+<h2>Card</h2>
+<h3 id="cardNumber">----</h3>
 </div>
 
 </div>
@@ -329,32 +228,42 @@ addDoc,
 collection
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
-authDomain: "revolut-bank-a462c.firebaseapp.com",
-projectId: "revolut-bank-a462c",
-storageBucket: "revolut-bank-a462c.firebasestorage.app",
-messagingSenderId: "834944913629",
-appId: "1:834944913629:web:32f821517ac21965600b34"
-};
+/* ================= FIREBASE ================= */
+const app = initializeApp({
+apiKey:"YOUR_KEY",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_ID"
+});
 
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let currentUser = null;
+/* ================= STATE ================= */
+let state = {
+user:null,
+data:null
+};
 
-// ================= AUTH =================
+/* ================= NAV (FAST) ================= */
+window.navigate = (page) => {
+
+document.querySelectorAll(".page")
+.forEach(p => p.classList.add("hidden"));
+
+document.getElementById(page).classList.remove("hidden");
+
+state.page = page;
+};
+
+/* ================= AUTH ================= */
 window.register = async () => {
 await createUserWithEmailAndPassword(auth,email.value,password.value);
-
-let card = "4532 " + Math.floor(Math.random()*9999);
 
 await setDoc(doc(db,"users",auth.currentUser.uid),{
 email:email.value,
 balance:1000,
-card,
-history:["Compte créé"]
+card:"4532 ****",
+history:["Account created"]
 });
 };
 
@@ -364,10 +273,11 @@ await signInWithEmailAndPassword(auth,email.value,password.value);
 
 window.logout = () => signOut(auth);
 
-// ================= AUTH STATE =================
+/* ================= AUTH STATE ================= */
 onAuthStateChanged(auth, async(user)=>{
 if(user){
-currentUser=user;
+
+state.user = user;
 
 loginPage.classList.add("hidden");
 sidebar.classList.remove("hidden");
@@ -377,63 +287,5 @@ loadUser(user);
 }
 });
 
-// ================= LOAD =================
-async function loadUser(user){
-let snap = await getDoc(doc(db,"users",user.uid));
-let data = snap.data();
-
-balance.innerText=data.balance;
-history.innerHTML=data.history.map(h=>`<li>${h}</li>`).join("");
-cardNumber.innerText=data.card;
-}
-
-// ================= FINANCE =================
-window.deposit = async () => {
-let ref = doc(db,"users",currentUser.uid);
-let snap = await getDoc(ref);
-let data = snap.data();
-
-await updateDoc(ref,{
-balance:data.balance+50,
-history:arrayUnion("+50€ dépôt")
-});
-
-loadUser(currentUser);
-};
-
-window.transfer = async () => {
-let ref = doc(db,"users",currentUser.uid);
-let snap = await getDoc(ref);
-let data = snap.data();
-
-await updateDoc(ref,{
-balance:data.balance-20,
-history:arrayUnion("-20€ transfert")
-});
-
-loadUser(currentUser);
-};
-
-// ================= LOAN WIZARD =================
-window.nextStep = (step) => {
-document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-document.getElementById('step'+step).classList.add('active');
-};
-
-window.submitLoan = async () => {
-await addDoc(collection(db,"loans"),{
-uid:currentUser.uid,
-amount:Number(amount.value),
-months:Number(months.value),
-income:Number(income.value),
-status:"pending",
-date:Date.now()
-});
-
-loanResult.innerText="Demande envoyée ✔";
-};
-
-</script>
-
-</body>
-</html>
+/* ================= LOAD (OPTIMIZED) ================= */
+async function
