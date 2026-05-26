@@ -5,189 +5,277 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revolut Bank</title>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+<!-- PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Graph -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background-image:
-linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
-url("fond-finance.jpg");
-
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-color:white;
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-background:rgba(0,0,0,0.8);
-backdrop-filter:blur(10px);
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-color:gold;
-}
-
-.menu a{
-color:white;
-text-decoration:none;
-margin:15px;
-}
-
-.btn{
-background:gold;
-color:black;
-padding:12px 25px;
-border:none;
-border-radius:30px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.hero{
-text-align:center;
-padding:90px 20px;
-}
-
-.hero h1{
-font-size:55px;
-margin-bottom:20px;
-}
-
-.hero span{
-color:gold;
-}
-
-.hero p{
-font-size:20px;
-margin-bottom:25px;
-}
-
-.container{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:30px;
-padding:40px;
-}
-
-.card{
-background:rgba(0,0,0,0.70);
-padding:25px;
-border-radius:25px;
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,.2);
-}
-
-.card h2{
-margin-bottom:15px;
-color:gold;
-}
-
-input{
-width:100%;
-padding:15px;
-margin-top:10px;
-margin-bottom:10px;
-border:none;
-border-radius:10px;
-}
-
+body{background:black;color:white;font-family:Arial;text-align:center;}
+input,button{padding:10px;margin:5px;border-radius:8px;border:none;}
 .bankcard{
-height:200px;
-border-radius:20px;
-padding:25px;
-background:linear-gradient(135deg, black, #333, gold);
-margin-top:20px;
+background:linear-gradient(135deg,gold,black);
+padding:20px;border-radius:15px;margin:10px;
 }
-
-.number{
-font-size:25px;
-margin-top:50px;
-}
-
-.footer{
-margin-top:50px;
-padding:30px;
-text-align:center;
-background:black;
-}
+canvas{background:white;margin-top:10px;}
 </style>
 </head>
 
 <body>
 
-<nav>
-<div class="logo">REVOLUT BANK</div>
+<h1>Revolut Bank 🏦</h1>
 
-<div class="menu">
-<a href="#">Accueil</a>
-<a href="#">Prêts</a>
-<a href="#">Cartes</a>
-<a href="#">Paiements</a>
-<a href="#">Connexion</a>
+<div>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Mot de passe">
+<button onclick="register()">Créer compte</button>
+<button onclick="login()">Connexion</button>
 </div>
 
-<button class="btn">Inscription</button>
-</nav>
+<div id="app" style="display:none">
 
-<section class="hero">
-<h1>VOTRE AVENIR<br><span>NOTRE PRIORITÉ</span></h1>
-<p>Des solutions financières modernes sécurisées partout dans le monde</p>
-<button class="btn">Commencer</button>
-</section>
+<h2 id="userName"></h2>
+<h3>💼 Solde: <span id="balance">0</span> €</h3>
 
-<div class="container">
+<button onclick="logout()">🚪 Déconnexion</button>
+<button onclick="exportPDF()">🧾 Relevé PDF</button>
 
-<div class="card">
-<h2>💰 DEMANDE DE PRÊT</h2>
-<p>Obtenez un crédit rapidement selon vos besoins.</p>
-<br>
-<button class="btn">Demander un prêt</button>
-</div>
+<div class="bankcard" id="card"></div>
 
-<div class="card">
-<h2>🔒 CONNEXION</h2>
-<input type="email" placeholder="Votre email">
-<input type="password" placeholder="Mot de passe">
-<button class="btn">Se connecter</button>
-</div>
+<h3>💸 Transfert</h3>
+<input id="to" placeholder="Email destinataire">
+<input id="amountTransfer" type="number" placeholder="Montant">
+<button onclick="transfer()">Envoyer</button>
 
-<div class="card">
-<h2>👤 CRÉER UN COMPTE</h2>
-<input type="text" placeholder="Nom">
-<input type="email" placeholder="Email">
-<input type="password" placeholder="Créer mot de passe">
-<button class="btn">S'inscrire</button>
-</div>
+<h3>💰 Crédit</h3>
+<input id="loanAmount" type="number" placeholder="Montant">
+<input id="months" type="number" placeholder="Durée (mois)">
+<button onclick="requestLoan()">Demander crédit</button>
 
-<div class="card">
-<h2>💳 CARTE BANCAIRE</h2>
+<canvas id="chart" width="300" height="200"></canvas>
 
-<div class="bankcard">
-REVOLUT BANK
-<div class="number">1234 5678 9012 3456</div>
-<br>
-Titulaire: CLIENT
-</div>
+<ul id="history"></ul>
 
 </div>
 
-</div>
+<script>
 
-<div class="footer">
-© 2026 Revolut Bank — Tous droits réservés
-</div>
+// CONFIG FIREBASE (REMPLACE PAR TES INFOS)
+const firebaseConfig = {
+apiKey: "TON_API_KEY",
+authDomain: "TON_AUTH_DOMAIN",
+projectId: "TON_PROJECT_ID",
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// INSCRIPTION
+function register(){
+auth.createUserWithEmailAndPassword(email.value,password.value)
+.then(user=>{
+db.collection("users").doc(user.user.uid).set({
+balance:1000,
+history:[],
+email: email.value
+});
+});
+}
+
+// LOGIN
+function login(){
+auth.signInWithEmailAndPassword(email.value,password.value);
+}
+
+// AUTH
+auth.onAuthStateChanged(user=>{
+if(user){
+app.style.display="block";
+loadData(user);
+}else{
+app.style.display="none";
+}
+});
+
+// LOAD DATA
+function loadData(user){
+
+db.collection("users").doc(user.uid).onSnapshot(doc=>{
+let data = doc.data();
+
+balance.innerText = data.balance;
+userName.innerText = user.email;
+
+// 💳 CARTE
+card.innerHTML = `
+Revolut Bank 🏦<br><br>
+**** **** **** ${Math.floor(Math.random()*9000+1000)}
+<br><br>${user.email}
+`;
+
+// HISTORIQUE
+let historyHTML = "";
+(data.history || []).forEach(h=>{
+historyHTML += "<li>"+h+"</li>";
+});
+history.innerHTML = historyHTML;
+
+// GRAPH
+new Chart(chart,{
+type:'bar',
+data:{
+labels:["Solde"],
+datasets:[{data:[data.balance]}]
+}
+});
+
+});
+
+}
+
+// TRANSFERT
+function transfer(){
+let toEmail = to.value;
+let amount = parseInt(amountTransfer.value);
+
+let user = auth.currentUser;
+
+let senderRef = db.collection("users").doc(user.uid);
+
+senderRef.get().then(doc=>{
+let senderData = doc.data();
+
+if(senderData.balance < amount){
+alert("Solde insuffisant");
+return;
+}
+
+db.collection("users")
+.where("email","==",toEmail)
+.get()
+.then(snapshot=>{
+
+if(snapshot.empty){
+alert("Destinataire introuvable");
+return;
+}
+
+let receiverDoc = snapshot.docs[0];
+let receiverRef = db.collection("users").doc(receiverDoc.id);
+
+// UPDATE
+senderRef.update({
+balance: senderData.balance - amount,
+history: [...senderData.history, "Envoyé "+amount+"€"]
+});
+
+receiverRef.update({
+balance: receiverDoc.data().balance + amount,
+history: [...receiverDoc.data().history, "Reçu "+amount+"€"]
+});
+
+alert("Transfert réussi");
+
+});
+
+});
+}
+
+// CRÉDIT
+function requestLoan(){
+
+let amount = parseInt(loanAmount.value);
+let months = parseInt(months.value);
+
+if(amount < 5000 || amount > 3000000000){
+alert("Montant invalide");
+return;
+}
+
+if(amount > 100000000){
+alert("Refus automatique");
+return;
+}
+
+let rate = 0.08;
+let total = amount + (amount * rate);
+let monthly = Math.round(total / months);
+
+let user = auth.currentUser;
+let ref = db.collection("users").doc(user.uid);
+
+ref.get().then(doc=>{
+let data = doc.data();
+
+ref.update({
+balance: data.balance + amount,
+history: [...data.history, "Crédit "+amount+"€"]
+});
+
+generatePDF(user.email, amount, total, monthly, months);
+});
+
+}
+
+// PDF CONTRAT
+function generatePDF(email, amount, total, monthly, months){
+
+const { jsPDF } = window.jspdf;
+let doc = new jsPDF();
+
+doc.text("CONTRAT DE CREDIT - Revolut Bank", 10, 10);
+doc.text("Client: "+email, 10, 20);
+doc.text("Montant: "+amount+"€", 10, 30);
+doc.text("Total: "+total+"€", 10, 40);
+doc.text("Mensualité: "+monthly+"€", 10, 50);
+doc.text("Durée: "+months+" mois", 10, 60);
+
+doc.save("contrat.pdf");
+
+}
+
+// PDF RELEVÉ
+function exportPDF(){
+
+let user = auth.currentUser;
+
+db.collection("users").doc(user.uid).get().then(doc=>{
+
+let data = doc.data();
+
+const { jsPDF } = window.jspdf;
+let pdf = new jsPDF();
+
+pdf.text("RELEVE BANCAIRE - Revolut Bank",10,10);
+pdf.text("Solde: "+data.balance+"€",10,20);
+
+let y=30;
+
+data.history.forEach(h=>{
+pdf.text(h,10,y);
+y+=10;
+});
+
+pdf.save("releve.pdf");
+
+});
+
+}
+
+// LOGOUT
+function logout(){
+auth.signOut();
+}
+
+</script>
 
 </body>
 </html>
