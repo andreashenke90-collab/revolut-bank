@@ -3,102 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Bank Pro</title>
+<title>Revolut Clone UI</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
+/* ===== GLOBAL ===== */
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+font-family:'Inter',sans-serif;
 }
 
 body{
-background:#070b1a;
+display:flex;
+background:#0b0f1a;
 color:white;
-overflow-x:hidden;
+height:100vh;
+overflow:hidden;
 }
 
-/* BACKGROUND EFFECT */
-body::before{
-content:'';
-position:fixed;
-width:600px;
-height:600px;
-background:linear-gradient(45deg,#6c63ff,#00d4ff);
-filter:blur(180px);
-top:-200px;
-right:-200px;
-opacity:.4;
-z-index:-1;
-}
-
-/* NAV */
-nav{
-display:flex;
-justify-content:space-between;
-padding:20px 8%;
-}
-
-/* HERO */
-.hero{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:70px 8%;
-}
-
-.hero h1{
-font-size:55px;
-}
-
-.card{
-width:360px;
-height:220px;
-border-radius:20px;
+/* ===== SIDEBAR ===== */
+.sidebar{
+width:260px;
+background:#0f1629;
 padding:20px;
-background:linear-gradient(135deg,#1a1f35,#0d1325);
-box-shadow:0 20px 50px rgba(0,0,0,.5);
+display:flex;
+flex-direction:column;
+gap:15px;
 }
 
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px;
-padding:50px 8%;
+.logo{
+font-size:20px;
+font-weight:700;
+margin-bottom:20px;
 }
 
-.stat{
-background:rgba(255,255,255,.05);
+.nav-item{
+padding:12px;
+border-radius:10px;
+cursor:pointer;
+background:transparent;
+transition:.2s;
+}
+
+.nav-item:hover{
+background:#1a2340;
+}
+
+/* ===== MAIN ===== */
+.main{
+flex:1;
+padding:30px;
+overflow:auto;
+}
+
+/* ===== CARDS ===== */
+.card{
+background:#121a2e;
 padding:20px;
 border-radius:15px;
-text-align:center;
+margin-bottom:20px;
 }
 
-/* AUTH */
-.auth{
-padding:50px 8%;
-text-align:center;
+.balance{
+font-size:40px;
+font-weight:700;
+}
+
+/* ===== GRID ===== */
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+}
+
+/* ===== HISTORY ===== */
+ul{
+list-style:none;
+}
+
+li{
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+/* ===== LOGIN ===== */
+.login{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0b0f1a;
 }
 
 .box{
-max-width:400px;
-margin:auto;
-background:rgba(255,255,255,.05);
+width:380px;
+background:#121a2e;
 padding:25px;
-border-radius:20px;
+border-radius:15px;
 }
 
 input{
 width:100%;
 padding:12px;
 margin:8px 0;
-border-radius:10px;
 border:none;
-background:#11192d;
+border-radius:10px;
+background:#0f1629;
 color:white;
 }
 
@@ -107,51 +122,13 @@ padding:12px;
 border:none;
 border-radius:10px;
 cursor:pointer;
-font-weight:bold;
-margin:5px;
+font-weight:600;
 }
 
 .primary{background:#6c63ff;color:white;}
 .secondary{background:#00d4ff;color:white;}
 
-/* DASHBOARD */
-.dashboard{
-display:none;
-padding:50px 8%;
-}
-
-.grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
-}
-
-.boxCard{
-background:rgba(255,255,255,.05);
-padding:20px;
-border-radius:15px;
-}
-
-.balance{
-font-size:40px;
-margin-top:10px;
-}
-
-ul{
-list-style:none;
-margin-top:10px;
-}
-
-li{
-padding:10px;
-border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-@media(max-width:900px){
-.hero{flex-direction:column;text-align:center;}
-.grid{grid-template-columns:1fr;}
-.stats{grid-template-columns:1fr;}
-}
+.hidden{display:none;}
 
 </style>
 
@@ -159,21 +136,230 @@ border-bottom:1px solid rgba(255,255,255,.1);
 
 <body>
 
-<!-- NAV -->
-<nav>
-<h2>FINTECH BANK</h2>
-</nav>
+<!-- LOGIN -->
+<div class="login" id="loginPage">
+<div class="box">
+<h2>Revolut Clone</h2>
 
-<!-- HERO -->
-<section class="hero">
-<div>
-<h1>Banque digitale nouvelle génération</h1>
-<p>Gérez votre argent intelligemment</p>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Mot de passe">
+
+<button class="primary" onclick="register()">Créer compte</button>
+<button class="secondary" onclick="login()">Connexion</button>
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar hidden" id="sidebar">
+<div class="logo">REVOLUT</div>
+
+<div class="nav-item" onclick="navigate('home')">🏠 Home</div>
+<div class="nav-item" onclick="navigate('transfer')">💸 Transfer</div>
+<div class="nav-item" onclick="navigate('cards')">💳 Cards</div>
+<div class="nav-item" onclick="logout()">🚪 Logout</div>
+</div>
+
+<!-- MAIN -->
+<div class="main hidden" id="main">
+
+<!-- HOME -->
+<div id="homePage">
+
+<div class="card">
+<h3>Balance</h3>
+<div class="balance">€ <span id="balance">0</span></div>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h3>Historique</h3>
+<ul id="history"></ul>
 </div>
 
 <div class="card">
-<h3>CARTE VIRTUELLE</h3>
-<br>
-<h2 id="cardNumber">4532 **** **** 9012</h2>
-<br>
-<p>EXP: 12/29
+<h3>Actions</h3>
+
+<button class="primary" onclick="deposit()">+ Dépôt 50€</button>
+<br><br>
+<button class="secondary" onclick="transfer()">- Transfert 20€</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TRANSFER -->
+<div id="transferPage" class="hidden card">
+<h3>Transfer</h3>
+<p>Fonction en simulation</p>
+</div>
+
+<!-- CARDS -->
+<div id="cardsPage" class="hidden card">
+<h3>Carte virtuelle</h3>
+<p id="cardNumber">**** **** **** ****</p>
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc,
+getDoc,
+updateDoc,
+arrayUnion
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
+authDomain: "revolut-bank-a462c.firebaseapp.com",
+projectId: "revolut-bank-a462c",
+storageBucket: "revolut-bank-a462c.firebasestorage.app",
+messagingSenderId: "834944913629",
+appId: "1:834944913629:web:32f821517ac21965600b34"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser = null;
+let state = {
+balance:0,
+history:[]
+};
+
+// ===== REGISTER =====
+window.register = async () => {
+let email = emailInput();
+let password = passInput();
+
+let user = await createUserWithEmailAndPassword(auth,email,password);
+
+let card = "4532 " + Math.floor(Math.random()*9999) + " **** ****";
+
+await setDoc(doc(db,"users",user.user.uid),{
+email,
+balance:1000,
+card,
+history:["Compte créé"]
+});
+};
+
+// ===== LOGIN =====
+window.login = async () => {
+let email = emailInput();
+let password = passInput();
+
+await signInWithEmailAndPassword(auth,email,password);
+};
+
+// ===== LOGOUT =====
+window.logout = async () => {
+await signOut(auth);
+};
+
+// ===== AUTH =====
+onAuthStateChanged(auth, async(user)=>{
+if(user){
+currentUser=user;
+
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("sidebar").classList.remove("hidden");
+document.getElementById("main").classList.remove("hidden");
+
+loadUser(user);
+}
+else{
+document.getElementById("loginPage").classList.remove("hidden");
+document.getElementById("sidebar").classList.add("hidden");
+document.getElementById("main").classList.add("hidden");
+}
+});
+
+// ===== LOAD USER =====
+async function loadUser(user){
+let snap = await getDoc(doc(db,"users",user.uid));
+let data = snap.data();
+
+state.balance = data.balance;
+state.history = data.history;
+
+render();
+}
+
+// ===== RENDER =====
+function render(){
+document.getElementById("balance").innerText = state.balance;
+
+document.getElementById("history").innerHTML =
+state.history.map(h=>`<li>${h}</li>`).join("");
+}
+
+// ===== DEPOSIT =====
+window.deposit = async () => {
+let ref = doc(db,"users",currentUser.uid);
+let snap = await getDoc(ref);
+
+let data = snap.data();
+
+await updateDoc(ref,{
+balance:data.balance+50,
+history:arrayUnion("+50€ dépôt")
+});
+
+loadUser(currentUser);
+};
+
+// ===== TRANSFER =====
+window.transfer = async () => {
+let ref = doc(db,"users",currentUser.uid);
+let snap = await getDoc(ref);
+
+let data = snap.data();
+
+await updateDoc(ref,{
+balance:data.balance-20,
+history:arrayUnion("-20€ transfert")
+});
+
+loadUser(currentUser);
+};
+
+// ===== NAVIGATION SPA =====
+window.navigate = (page) => {
+
+["homePage","transferPage","cardsPage"].forEach(p=>{
+document.getElementById(p).classList.add("hidden");
+});
+
+document.getElementById(page+"Page").classList.remove("hidden");
+};
+
+// ===== HELPERS =====
+function emailInput(){
+return document.getElementById("email").value;
+}
+
+function passInput(){
+return document.getElementById("password").value;
+}
+
+</script>
+
+</body>
+</html>
