@@ -3,45 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revolut Clone UI</title>
+<title>Fintech Revolut + Loan</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 /* ===== GLOBAL ===== */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
 body{
-display:flex;
-background:#0b0f1a;
+background:#0b1020;
 color:white;
+display:flex;
 height:100vh;
 overflow:hidden;
 }
 
 /* ===== SIDEBAR ===== */
 .sidebar{
-width:260px;
-background:#0f1629;
+width:250px;
+background:#0f172a;
 padding:20px;
 display:flex;
 flex-direction:column;
-gap:15px;
+gap:12px;
 }
 
 .logo{
 font-size:20px;
 font-weight:700;
-margin-bottom:20px;
+margin-bottom:10px;
 }
 
-.nav-item{
+.nav{
 padding:12px;
 border-radius:10px;
 cursor:pointer;
@@ -49,20 +44,18 @@ background:transparent;
 transition:.2s;
 }
 
-.nav-item:hover{
-background:#1a2340;
-}
+.nav:hover{background:#1e293b}
 
 /* ===== MAIN ===== */
 .main{
 flex:1;
-padding:30px;
+padding:25px;
 overflow:auto;
 }
 
 /* ===== CARDS ===== */
 .card{
-background:#121a2e;
+background:#111827;
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
@@ -80,40 +73,14 @@ grid-template-columns:2fr 1fr;
 gap:20px;
 }
 
-/* ===== HISTORY ===== */
-ul{
-list-style:none;
-}
-
-li{
-padding:10px;
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-/* ===== LOGIN ===== */
-.login{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#0b0f1a;
-}
-
-.box{
-width:380px;
-background:#121a2e;
-padding:25px;
-border-radius:15px;
-}
-
-input{
+/* ===== LOAN FORM ===== */
+input,select{
 width:100%;
 padding:12px;
 margin:8px 0;
-border:none;
 border-radius:10px;
-background:#0f1629;
+border:none;
+background:#0f172a;
 color:white;
 }
 
@@ -123,10 +90,31 @@ border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
+margin-top:8px;
 }
 
-.primary{background:#6c63ff;color:white;}
-.secondary{background:#00d4ff;color:white;}
+.primary{background:#6366f1;color:white;}
+.secondary{background:#06b6d4;color:white;}
+
+ul{list-style:none;}
+li{padding:10px;border-bottom:1px solid rgba(255,255,255,0.1);}
+
+/* ===== LOGIN ===== */
+.login{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#0b1020;
+}
+
+.box{
+width:380px;
+background:#111827;
+padding:25px;
+border-radius:15px;
+}
 
 .hidden{display:none;}
 
@@ -139,7 +127,7 @@ font-weight:600;
 <!-- LOGIN -->
 <div class="login" id="loginPage">
 <div class="box">
-<h2>Revolut Clone</h2>
+<h2>Fintech Login</h2>
 
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Mot de passe">
@@ -151,19 +139,19 @@ font-weight:600;
 
 <!-- SIDEBAR -->
 <div class="sidebar hidden" id="sidebar">
-<div class="logo">REVOLUT</div>
+<div class="logo">REVOLUT+</div>
 
-<div class="nav-item" onclick="navigate('home')">🏠 Home</div>
-<div class="nav-item" onclick="navigate('transfer')">💸 Transfer</div>
-<div class="nav-item" onclick="navigate('cards')">💳 Cards</div>
-<div class="nav-item" onclick="logout()">🚪 Logout</div>
+<div class="nav" onclick="show('home')">🏠 Dashboard</div>
+<div class="nav" onclick="show('loan')">💸 Loan Request</div>
+<div class="nav" onclick="show('cards')">💳 Card</div>
+<div class="nav" onclick="logout()">🚪 Logout</div>
 </div>
 
 <!-- MAIN -->
 <div class="main hidden" id="main">
 
-<!-- HOME -->
-<div id="homePage">
+<!-- DASHBOARD -->
+<div id="home">
 
 <div class="card">
 <h3>Balance</h3>
@@ -179,27 +167,36 @@ font-weight:600;
 
 <div class="card">
 <h3>Actions</h3>
-
 <button class="primary" onclick="deposit()">+ Dépôt 50€</button>
-<br><br>
 <button class="secondary" onclick="transfer()">- Transfert 20€</button>
-
 </div>
 
 </div>
 
 </div>
 
-<!-- TRANSFER -->
-<div id="transferPage" class="hidden card">
-<h3>Transfer</h3>
-<p>Fonction en simulation</p>
+<!-- LOAN SYSTEM -->
+<div id="loan" class="hidden card">
+
+<h2>Loan Request</h2>
+
+<input id="amount" type="number" placeholder="Montant du prêt (€)">
+<input id="months" type="number" placeholder="Durée (mois)">
+<input id="income" type="number" placeholder="Revenu mensuel (€)">
+
+<button class="primary" onclick="calculateLoan()">Calculer</button>
+<button class="secondary" onclick="submitLoan()">Envoyer demande</button>
+
+<h3 id="loanResult"></h3>
+
 </div>
 
 <!-- CARDS -->
-<div id="cardsPage" class="hidden card">
-<h3>Carte virtuelle</h3>
+<div id="cards" class="hidden card">
+
+<h2>Carte virtuelle</h2>
 <p id="cardNumber">**** **** **** ****</p>
+
 </div>
 
 </div>
@@ -221,7 +218,9 @@ doc,
 setDoc,
 getDoc,
 updateDoc,
-arrayUnion
+arrayUnion,
+addDoc,
+collection
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -238,22 +237,19 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 let currentUser = null;
-let state = {
-balance:0,
-history:[]
-};
 
 // ===== REGISTER =====
 window.register = async () => {
-let email = emailInput();
-let password = passInput();
-
-let user = await createUserWithEmailAndPassword(auth,email,password);
+let user = await createUserWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
 
 let card = "4532 " + Math.floor(Math.random()*9999) + " **** ****";
 
 await setDoc(doc(db,"users",user.user.uid),{
-email,
+email:email.value,
 balance:1000,
 card,
 history:["Compte créé"]
@@ -262,32 +258,22 @@ history:["Compte créé"]
 
 // ===== LOGIN =====
 window.login = async () => {
-let email = emailInput();
-let password = passInput();
-
-await signInWithEmailAndPassword(auth,email,password);
+await signInWithEmailAndPassword(auth,email.value,password.value);
 };
 
 // ===== LOGOUT =====
-window.logout = async () => {
-await signOut(auth);
-};
+window.logout = () => signOut(auth);
 
 // ===== AUTH =====
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(auth,async(user)=>{
 if(user){
 currentUser=user;
 
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("sidebar").classList.remove("hidden");
-document.getElementById("main").classList.remove("hidden");
+loginPage.classList.add("hidden");
+sidebar.classList.remove("hidden");
+main.classList.remove("hidden");
 
 loadUser(user);
-}
-else{
-document.getElementById("loginPage").classList.remove("hidden");
-document.getElementById("sidebar").classList.add("hidden");
-document.getElementById("main").classList.add("hidden");
 }
 });
 
@@ -296,25 +282,15 @@ async function loadUser(user){
 let snap = await getDoc(doc(db,"users",user.uid));
 let data = snap.data();
 
-state.balance = data.balance;
-state.history = data.history;
-
-render();
-}
-
-// ===== RENDER =====
-function render(){
-document.getElementById("balance").innerText = state.balance;
-
-document.getElementById("history").innerHTML =
-state.history.map(h=>`<li>${h}</li>`).join("");
+balance.innerText=data.balance;
+history.innerHTML=data.history.map(h=>`<li>${h}</li>`).join("");
+cardNumber.innerText=data.card;
 }
 
 // ===== DEPOSIT =====
 window.deposit = async () => {
 let ref = doc(db,"users",currentUser.uid);
 let snap = await getDoc(ref);
-
 let data = snap.data();
 
 await updateDoc(ref,{
@@ -329,7 +305,6 @@ loadUser(currentUser);
 window.transfer = async () => {
 let ref = doc(db,"users",currentUser.uid);
 let snap = await getDoc(ref);
-
 let data = snap.data();
 
 await updateDoc(ref,{
@@ -340,24 +315,40 @@ history:arrayUnion("-20€ transfert")
 loadUser(currentUser);
 };
 
-// ===== NAVIGATION SPA =====
-window.navigate = (page) => {
+// ===== LOAN CALCULATOR =====
+window.calculateLoan = () => {
+let amount = Number(amount.value);
+let months = Number(months.value);
 
-["homePage","transferPage","cardsPage"].forEach(p=>{
+let rate = 0.05;
+let monthly = (amount * rate / 12) / (1 - Math.pow(1 + rate/12, -months));
+
+loanResult.innerText = "Mensualité: € " + monthly.toFixed(2);
+};
+
+// ===== LOAN SUBMIT =====
+window.submitLoan = async () => {
+await addDoc(collection(db,"loans"),{
+uid:currentUser.uid,
+amount:Number(amount.value),
+months:Number(months.value),
+income:Number(income.value),
+status:"pending",
+date:Date.now()
+});
+
+loanResult.innerText="Demande envoyée ✔";
+};
+
+// ===== NAVIGATION =====
+window.show = (page) => {
+
+["home","loan","cards"].forEach(p=>{
 document.getElementById(p).classList.add("hidden");
 });
 
-document.getElementById(page+"Page").classList.remove("hidden");
+document.getElementById(page).classList.remove("hidden");
 };
-
-// ===== HELPERS =====
-function emailInput(){
-return document.getElementById("email").value;
-}
-
-function passInput(){
-return document.getElementById("password").value;
-}
 
 </script>
 
