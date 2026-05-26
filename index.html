@@ -5,26 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revolut Bank 🏦</title>
 
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { getFirestore, doc, setDoc, getDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ✅ TA CONFIG FIREBASE (DÉJÀ INTÉGRÉE)
+const firebaseConfig = {
+  apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
+  authDomain: "revolut-bank-a462c.firebaseapp.com",
+  projectId: "revolut-bank-a462c",
+  storageBucket: "revolut-bank-a462c.firebasestorage.app",
+  messagingSenderId: "834944913629",
+  appId: "1:834944913629:web:32f821517ac21965600b34",
+  measurementId: "G-MP2X5R2HTZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// INSCRIPTION
+window.register = async function(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if(!email.includes("@")){
+    alert("Email invalide !");
+    return;
+  }
+
+  if(password.length < 6){
+    alert("Mot de passe trop court !");
+    return;
+  }
+
+  try{
+    let userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+    await setDoc(doc(db, "users", userCred.user.uid), {
+      email: email,
+      balance: 1000,
+      history: ["Compte créé"]
+    });
+
+    alert("Compte créé !");
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+// LOGIN
+window.login = async function(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  try{
+    await signInWithEmailAndPassword(auth, email, password);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+// AUTH STATE
+onAuthStateChanged(auth, async (user)=>{
+  if(user){
+    document.getElementById("appDiv").style.display="block";
+    loadData(user);
+  }else{
+    document.getElementById("appDiv").style.display="none";
+  }
+});
+
+// LOAD DATA
+async function loadData(user){
+  let ref = doc(db, "users", user.uid);
+  let snap = await getDoc(ref);
+  let data = snap.data();
+
+  document.getElementById("userName").innerText = user.email;
+  document.getElementById("balance").innerText = data.balance;
+
+  let history = document.getElementById("history");
+  history.innerHTML = "";
+
+  data.history.forEach(h=>{
+    let li = document.createElement("li");
+    li.innerText = h;
+    history.appendChild(li);
+  });
+}
+
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+}
+
+</script>
+
 <style>
-body{
-background:black;
-color:white;
-text-align:center;
-font-family:Arial;
-}
-
-input,button{
-padding:12px;
-margin:5px;
-border-radius:10px;
-border:none;
-}
-
-button{
-background:gold;
-font-weight:bold;
-cursor:pointer;
-}
+body{background:black;color:white;text-align:center;font-family:Arial;}
+input,button{padding:12px;margin:6px;border-radius:10px;border:none;}
+button{background:gold;color:black;font-weight:bold;}
 </style>
 
 </head>
@@ -47,103 +133,9 @@ cursor:pointer;
 
 <button onclick="logout()">Déconnexion</button>
 
+<h3>📜 Historique</h3>
 <ul id="history"></ul>
 </div>
-
-<!-- 🔥 FIREBASE -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { getFirestore, doc, setDoc, getDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ✅ CONFIG FIREBASE
-const firebaseConfig = {
-  apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
-  authDomain: "revolut-bank-a462c.firebaseapp.com",
-  projectId: "revolut-bank-a462c",
-  storageBucket: "revolut-bank-a462c.appspot.com",
-  messagingSenderId: "834944913629",
-  appId: "1:834944913629:web:32f821517ac21965600b34"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// INSCRIPTION
-window.register = async function(){
-
-  if(!email.value.includes("@")){
-    alert("Email invalide !");
-    return;
-  }
-
-  if(password.value.length < 6){
-    alert("Mot de passe trop court !");
-    return;
-  }
-
-  try{
-    let userCred = await createUserWithEmailAndPassword(auth, email.value, password.value);
-
-    await setDoc(doc(db, "users", userCred.user.uid), {
-      email: email.value,
-      balance: 1000,
-      history: ["Compte créé"]
-    });
-
-    alert("Compte créé !");
-  }catch(e){
-    alert(e.message);
-  }
-}
-
-// LOGIN
-window.login = async function(){
-  try{
-    await signInWithEmailAndPassword(auth, email.value, password.value);
-  }catch(e){
-    alert(e.message);
-  }
-}
-
-// AUTH STATE
-onAuthStateChanged(auth, async (user)=>{
-  if(user){
-    appDiv.style.display="block";
-    loadData(user);
-  }else{
-    appDiv.style.display="none";
-  }
-});
-
-// LOAD DATA
-async function loadData(user){
-  let ref = doc(db, "users", user.uid);
-  let snap = await getDoc(ref);
-  let data = snap.data();
-
-  userName.innerText = user.email;
-  balance.innerText = data.balance;
-
-  history.innerHTML = "";
-  (data.history || []).forEach(h=>{
-    let li = document.createElement("li");
-    li.innerText = h;
-    history.appendChild(li);
-  });
-}
-
-// LOGOUT
-window.logout = function(){
-  signOut(auth);
-}
-
-</script>
 
 </body>
 </html>
