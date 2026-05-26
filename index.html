@@ -3,139 +3,351 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revolut Bank 🏦</title>
+<title>Bank Demo Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script type="module">
 
+// ================= FIREBASE =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { 
+getAuth, 
+createUserWithEmailAndPassword, 
+signInWithEmailAndPassword, 
+onAuthStateChanged, 
+signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import { getFirestore, doc, setDoc, getDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+getFirestore, 
+doc, 
+setDoc, 
+getDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ✅ TA CONFIG FIREBASE (DÉJÀ INTÉGRÉE)
+// 🔥 CONFIG FIREBASE
 const firebaseConfig = {
-  apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
-  authDomain: "revolut-bank-a462c.firebaseapp.com",
-  projectId: "revolut-bank-a462c",
-  storageBucket: "revolut-bank-a462c.firebasestorage.app",
-  messagingSenderId: "834944913629",
-  appId: "1:834944913629:web:32f821517ac21965600b34",
-  measurementId: "G-MP2X5R2HTZ"
+apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
+authDomain: "revolut-bank-a462c.firebaseapp.com",
+projectId: "revolut-bank-a462c",
+storageBucket: "revolut-bank-a462c.firebasestorage.app",
+messagingSenderId: "834944913629",
+appId: "1:834944913629:web:32f821517ac21965600b34"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// INSCRIPTION
-window.register = async function(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+// ================= REGISTER =================
+window.register = async function () {
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
 
-  if(!email.includes("@")){
-    alert("Email invalide !");
-    return;
-  }
+try {
+let userCred = await createUserWithEmailAndPassword(auth, email, password);
 
-  if(password.length < 6){
-    alert("Mot de passe trop court !");
-    return;
-  }
-
-  try{
-    let userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-    await setDoc(doc(db, "users", userCred.user.uid), {
-      email: email,
-      balance: 1000,
-      history: ["Compte créé"]
-    });
-
-    alert("Compte créé !");
-  }catch(e){
-    alert(e.message);
-  }
-}
-
-// LOGIN
-window.login = async function(){
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-
-  try{
-    await signInWithEmailAndPassword(auth, email, password);
-  }catch(e){
-    alert(e.message);
-  }
-}
-
-// AUTH STATE
-onAuthStateChanged(auth, async (user)=>{
-  if(user){
-    document.getElementById("appDiv").style.display="block";
-    loadData(user);
-  }else{
-    document.getElementById("appDiv").style.display="none";
-  }
+await setDoc(doc(db, "users", userCred.user.uid), {
+email: email,
+balance: 1000,
+history: ["Compte créé"]
 });
 
-// LOAD DATA
-async function loadData(user){
-  let ref = doc(db, "users", user.uid);
-  let snap = await getDoc(ref);
-  let data = snap.data();
-
-  document.getElementById("userName").innerText = user.email;
-  document.getElementById("balance").innerText = data.balance;
-
-  let history = document.getElementById("history");
-  history.innerHTML = "";
-
-  data.history.forEach(h=>{
-    let li = document.createElement("li");
-    li.innerText = h;
-    history.appendChild(li);
-  });
+alert("Compte créé !");
+} catch (e) {
+alert(e.message);
+}
 }
 
-// LOGOUT
-window.logout = function(){
-  signOut(auth);
+// ================= LOGIN =================
+window.login = async function () {
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+
+try {
+await signInWithEmailAndPassword(auth, email, password);
+} catch (e) {
+alert(e.message);
+}
+}
+
+// ================= LOGOUT =================
+window.logout = function () {
+signOut(auth);
+}
+
+// ================= AUTH STATE =================
+onAuthStateChanged(auth, async (user) => {
+if (user) {
+document.getElementById("authSection").style.display = "none";
+document.getElementById("dashboard").style.display = "block";
+loadData(user);
+} else {
+document.getElementById("authSection").style.display = "block";
+document.getElementById("dashboard").style.display = "none";
+}
+});
+
+// ================= LOAD DATA =================
+async function loadData(user) {
+let ref = doc(db, "users", user.uid);
+let snap = await getDoc(ref);
+let data = snap.data();
+
+document.getElementById("userName").innerText = user.email;
+document.getElementById("balance").innerText = data.balance;
+
+let history = document.getElementById("history");
+history.innerHTML = "";
+
+data.history.forEach(h => {
+let li = document.createElement("li");
+li.innerText = h;
+history.appendChild(li);
+});
 }
 
 </script>
 
 <style>
-body{background:black;color:white;text-align:center;font-family:Arial;}
-input,button{padding:12px;margin:6px;border-radius:10px;border:none;}
-button{background:gold;color:black;font-weight:bold;}
+
+/* ===== GLOBAL ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+}
+
+body::before{
+content:'';
+position:fixed;
+width:500px;
+height:500px;
+background:linear-gradient(#6c63ff,#00d4ff);
+filter:blur(180px);
+top:-150px;
+right:-150px;
+opacity:.4;
+z-index:-1;
+}
+
+/* ===== NAV ===== */
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:20px 8%;
+}
+
+.logo{
+font-size:26px;
+font-weight:700;
+}
+
+/* ===== HERO ===== */
+.hero{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:80px 8%;
+min-height:80vh;
+}
+
+.hero h1{
+font-size:55px;
+}
+
+/* ===== CARD ===== */
+.card3d{
+width:360px;
+height:220px;
+border-radius:20px;
+padding:25px;
+background:linear-gradient(135deg,#1c2235,#0d1325);
+box-shadow:0 20px 50px rgba(0,0,0,.5);
+transform:rotateY(-12deg);
+transition:.4s;
+}
+
+.card3d:hover{
+transform:rotateY(0deg);
+}
+
+/* ===== STATS ===== */
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+padding:50px 8%;
+}
+
+.stat{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+/* ===== AUTH ===== */
+.auth-section{
+padding:60px 8%;
+text-align:center;
+}
+
+.auth-box{
+max-width:400px;
+margin:auto;
+background:rgba(255,255,255,.05);
+padding:25px;
+border-radius:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+background:#11192d;
+color:white;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.primary{
+background:#6c63ff;
+color:white;
+}
+
+.secondary{
+background:#00d4ff;
+}
+
+/* ===== DASHBOARD ===== */
+.dashboard{
+display:none;
+padding:50px 8%;
+}
+
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:15px;
+}
+
+.balance{
+font-size:40px;
+margin-top:10px;
+}
+
+ul{
+list-style:none;
+margin-top:10px;
+}
+
+li{
+padding:10px;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+.hero{flex-direction:column;text-align:center;gap:30px;}
+.grid{grid-template-columns:1fr;}
+.stats{grid-template-columns:1fr;}
+}
+
 </style>
 
 </head>
 
 <body>
 
-<h1>Revolut Bank 🏦</h1>
+<!-- NAV -->
+<div class="navbar">
+<div class="logo">BANK DEMO</div>
+</div>
 
+<!-- HERO -->
+<section class="hero">
 <div>
+<h1>La banque digitale nouvelle génération</h1>
+<p>Gérez votre argent, transférez et suivez vos finances.</p>
+</div>
+
+<div class="card3d">
+<h3>Premium Card</h3>
+<br>
+<h2>4532 **** **** 9012</h2>
+<br>
+<p>CLIENT DEMO</p>
+</div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+<div class="stat"><h2>10K+</h2><p>Users</p></div>
+<div class="stat"><h2>150+</h2><p>Pays</p></div>
+<div class="stat"><h2>99%</h2><p>Uptime</p></div>
+</section>
+
+<!-- AUTH -->
+<section class="auth-section" id="authSection">
+<div class="auth-box">
+<h2>Connexion</h2>
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Mot de passe">
-<br>
-<button onclick="register()">Créer compte</button>
-<button onclick="login()">Connexion</button>
+
+<button class="primary" onclick="register()">Créer compte</button>
+<button class="secondary" onclick="login()">Connexion</button>
 </div>
+</section>
 
-<div id="appDiv" style="display:none">
-<h2 id="userName"></h2>
-<h3>💼 Solde : <span id="balance">0</span> €</h3>
+<!-- DASHBOARD -->
+<section class="dashboard" id="dashboard">
 
-<button onclick="logout()">Déconnexion</button>
+<div class="grid">
 
-<h3>📜 Historique</h3>
+<div class="card">
+<h3>Bienvenue</h3>
+<p id="userName"></p>
+
+<h2 class="balance">€ <span id="balance">0</span></h2>
+
+<button onclick="logout()" class="primary">Déconnexion</button>
+
+<h3>Historique</h3>
 <ul id="history"></ul>
 </div>
+
+<div class="card">
+<h3>Carte virtuelle</h3>
+<p>4532 **** **** 9012</p>
+<p>EXP: 12/29</p>
+</div>
+
+</div>
+
+</section>
 
 </body>
 </html>
