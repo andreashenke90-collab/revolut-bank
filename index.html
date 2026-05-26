@@ -3,116 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Bank Demo Premium</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<script type="module">
-
-// ================= FIREBASE =================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-getAuth, 
-createUserWithEmailAndPassword, 
-signInWithEmailAndPassword, 
-onAuthStateChanged, 
-signOut 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { 
-getFirestore, 
-doc, 
-setDoc, 
-getDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// 🔥 CONFIG FIREBASE
-const firebaseConfig = {
-apiKey: "AIzaSyD9MXofDad3s2A39CaVOkYylseXlCVyMlo",
-authDomain: "revolut-bank-a462c.firebaseapp.com",
-projectId: "revolut-bank-a462c",
-storageBucket: "revolut-bank-a462c.firebasestorage.app",
-messagingSenderId: "834944913629",
-appId: "1:834944913629:web:32f821517ac21965600b34"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ================= REGISTER =================
-window.register = async function () {
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
-
-try {
-let userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-await setDoc(doc(db, "users", userCred.user.uid), {
-email: email,
-balance: 1000,
-history: ["Compte créé"]
-});
-
-alert("Compte créé !");
-} catch (e) {
-alert(e.message);
-}
-}
-
-// ================= LOGIN =================
-window.login = async function () {
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
-
-try {
-await signInWithEmailAndPassword(auth, email, password);
-} catch (e) {
-alert(e.message);
-}
-}
-
-// ================= LOGOUT =================
-window.logout = function () {
-signOut(auth);
-}
-
-// ================= AUTH STATE =================
-onAuthStateChanged(auth, async (user) => {
-if (user) {
-document.getElementById("authSection").style.display = "none";
-document.getElementById("dashboard").style.display = "block";
-loadData(user);
-} else {
-document.getElementById("authSection").style.display = "block";
-document.getElementById("dashboard").style.display = "none";
-}
-});
-
-// ================= LOAD DATA =================
-async function loadData(user) {
-let ref = doc(db, "users", user.uid);
-let snap = await getDoc(ref);
-let data = snap.data();
-
-document.getElementById("userName").innerText = user.email;
-document.getElementById("balance").innerText = data.balance;
-
-let history = document.getElementById("history");
-history.innerHTML = "";
-
-data.history.forEach(h => {
-let li = document.createElement("li");
-li.innerText = h;
-history.appendChild(li);
-});
-}
-
-</script>
-
 <style>
 
-/* ===== GLOBAL ===== */
 *{
 margin:0;
 padding:0;
@@ -139,215 +36,439 @@ opacity:.4;
 z-index:-1;
 }
 
-/* ===== NAV ===== */
 .navbar{
 display:flex;
 justify-content:space-between;
+align-items:center;
 padding:20px 8%;
 }
 
 .logo{
-font-size:26px;
+font-size:28px;
 font-weight:700;
 }
 
-/* ===== HERO ===== */
+.nav-links{
+display:flex;
+gap:25px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+}
+
 .hero{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:80px 8%;
-min-height:80vh;
+min-height:90vh;
 }
 
-.hero h1{
-font-size:55px;
+.hero-left{
+max-width:600px;
 }
 
-/* ===== CARD ===== */
+.hero-left h1{
+font-size:60px;
+line-height:1.1;
+margin-bottom:20px;
+}
+
+.hero-left p{
+opacity:.8;
+margin-bottom:25px;
+}
+
+.btn{
+padding:14px 28px;
+border:none;
+border-radius:14px;
+cursor:pointer;
+font-weight:600;
+background:linear-gradient(90deg,#6c63ff,#00d4ff);
+color:white;
+}
+
 .card3d{
-width:360px;
-height:220px;
-border-radius:20px;
+width:380px;
+height:230px;
+border-radius:25px;
 padding:25px;
-background:linear-gradient(135deg,#1c2235,#0d1325);
-box-shadow:0 20px 50px rgba(0,0,0,.5);
-transform:rotateY(-12deg);
+background:linear-gradient(135deg,#20283d,#0d1325);
+box-shadow:0 25px 50px rgba(0,0,0,.5);
+transform:rotateY(-15deg) rotateX(10deg);
 transition:.4s;
 }
 
 .card3d:hover{
-transform:rotateY(0deg);
+transform:rotateY(0deg) rotateX(0deg);
 }
 
-/* ===== STATS ===== */
+.card-chip{
+width:60px;
+height:45px;
+background:gold;
+border-radius:8px;
+margin-bottom:30px;
+}
+
+.card-number{
+font-size:24px;
+letter-spacing:3px;
+margin-bottom:25px;
+}
+
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:20px;
-padding:50px 8%;
+gap:25px;
+padding:60px 8%;
 }
 
 .stat{
 background:rgba(255,255,255,.05);
-padding:20px;
-border-radius:15px;
+padding:30px;
+border-radius:20px;
+backdrop-filter:blur(12px);
 text-align:center;
 }
 
-/* ===== AUTH ===== */
 .auth-section{
-padding:60px 8%;
-text-align:center;
+padding:80px 8%;
+display:flex;
+justify-content:center;
 }
 
 .auth-box{
-max-width:400px;
-margin:auto;
+width:420px;
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:20px;
+backdrop-filter:blur(12px);
+}
+
+.auth-box h2{
+margin-bottom:20px;
+text-align:center;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+border-radius:12px;
+background:#11192d;
+color:white;
+}
+
+.auth-buttons{
+display:flex;
+gap:10px;
+}
+
+.auth-buttons button{
+flex:1;
+padding:14px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+}
+
+.register{
+background:#00d4ff;
+}
+
+.login{
+background:#6c63ff;
+color:white;
+}
+
+.dashboard{
+display:none;
+padding:60px 8%;
+}
+
+.dashboard-grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:25px;
+}
+
+.balance-card,
+.profile-card,
+.history-card{
 background:rgba(255,255,255,.05);
 padding:25px;
 border-radius:20px;
 }
 
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:10px;
-border:none;
-background:#11192d;
-color:white;
+.balance{
+font-size:48px;
+font-weight:700;
+margin-top:10px;
 }
 
-button{
-padding:12px;
+.actions{
+margin-top:20px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.action-btn{
+padding:12px 18px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
-font-weight:bold;
 }
 
-.primary{
+.deposit{
+background:#00d4ff;
+}
+
+.transfer{
 background:#6c63ff;
 color:white;
 }
 
-.secondary{
-background:#00d4ff;
+.logout{
+background:#ff4d4d;
+color:white;
 }
 
-/* ===== DASHBOARD ===== */
-.dashboard{
-display:none;
-padding:50px 8%;
+.history-card{
+margin-top:25px;
 }
 
-.grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
-}
-
-.card{
-background:rgba(255,255,255,.05);
-padding:20px;
-border-radius:15px;
-}
-
-.balance{
-font-size:40px;
-margin-top:10px;
-}
-
-ul{
+.history-card ul{
+margin-top:15px;
 list-style:none;
-margin-top:10px;
 }
 
-li{
-padding:10px;
+.history-card li{
+padding:12px;
 border-bottom:1px solid rgba(255,255,255,.1);
 }
 
-/* ===== RESPONSIVE ===== */
+.footer{
+padding:40px;
+text-align:center;
+opacity:.6;
+}
+
 @media(max-width:900px){
-.hero{flex-direction:column;text-align:center;gap:30px;}
-.grid{grid-template-columns:1fr;}
-.stats{grid-template-columns:1fr;}
+
+.hero{
+flex-direction:column;
+gap:50px;
+text-align:center;
+}
+
+.hero-left h1{
+font-size:42px;
+}
+
+.stats{
+grid-template-columns:1fr;
+}
+
+.dashboard-grid{
+grid-template-columns:1fr;
+}
+
+.card3d{
+width:100%;
+max-width:380px;
+}
+
 }
 
 </style>
-
 </head>
 
 <body>
 
-<!-- NAV -->
-<div class="navbar">
+<nav class="navbar">
 <div class="logo">BANK DEMO</div>
-</div>
 
-<!-- HERO -->
+<div class="nav-links">
+<a href="#">Accueil</a>
+<a href="#">Cartes</a>
+<a href="#">Paiements</a>
+<a href="#">Sécurité</a>
+</div>
+</nav>
+
 <section class="hero">
-<div>
-<h1>La banque digitale nouvelle génération</h1>
-<p>Gérez votre argent, transférez et suivez vos finances.</p>
+
+<div class="hero-left">
+<h1>La banque numérique nouvelle génération</h1>
+
+<p>
+Gérez vos finances, consultez votre solde,
+effectuez des transferts et utilisez une carte virtuelle.
+</p>
+
+<button class="btn">
+Ouvrir un compte
+</button>
 </div>
 
 <div class="card3d">
-<h3>Premium Card</h3>
-<br>
-<h2>4532 **** **** 9012</h2>
-<br>
-<p>CLIENT DEMO</p>
+<div class="card-chip"></div>
+
+<div class="card-number">
+4532 1234 5678 9012
 </div>
+
+<div>
+Titulaire : CLIENT DEMO
+</div>
+
+<div style="margin-top:15px;">
+12/29
+</div>
+</div>
+
 </section>
 
-<!-- STATS -->
 <section class="stats">
-<div class="stat"><h2>10K+</h2><p>Users</p></div>
-<div class="stat"><h2>150+</h2><p>Pays</p></div>
-<div class="stat"><h2>99%</h2><p>Uptime</p></div>
+
+<div class="stat">
+<h2>10M+</h2>
+<p>Utilisateurs</p>
+</div>
+
+<div class="stat">
+<h2>150+</h2>
+<p>Pays</p>
+</div>
+
+<div class="stat">
+<h2>99.9%</h2>
+<p>Disponibilité</p>
+</div>
+
 </section>
 
-<!-- AUTH -->
-<section class="auth-section" id="authSection">
+<section class="auth-section">
+
 <div class="auth-box">
+
 <h2>Connexion</h2>
-<input id="email" placeholder="Email">
+
+<input id="email" type="email" placeholder="Adresse email">
+
 <input id="password" type="password" placeholder="Mot de passe">
 
-<button class="primary" onclick="register()">Créer compte</button>
-<button class="secondary" onclick="login()">Connexion</button>
+<div class="auth-buttons">
+
+<button class="register" onclick="register()">
+Créer compte
+</button>
+
+<button class="login" onclick="login()">
+Connexion
+</button>
+
 </div>
+
+</div>
+
 </section>
 
-<!-- DASHBOARD -->
-<section class="dashboard" id="dashboard">
+<section id="dashboard" class="dashboard">
 
-<div class="grid">
+<div class="dashboard-grid">
 
-<div class="card">
-<h3>Bienvenue</h3>
-<p id="userName"></p>
+<div>
 
-<h2 class="balance">€ <span id="balance">0</span></h2>
+<div class="balance-card">
 
-<button onclick="logout()" class="primary">Déconnexion</button>
+<p>Solde disponible</p>
+
+<div class="balance">
+€ <span id="balance">1000</span>
+</div>
+
+<div class="actions">
+
+<button class="action-btn deposit">
+Dépôt
+</button>
+
+<button class="action-btn transfer">
+Transfert
+</button>
+
+<button class="action-btn logout" onclick="logout()">
+Déconnexion
+</button>
+
+</div>
+
+</div>
+
+<div class="history-card">
 
 <h3>Historique</h3>
-<ul id="history"></ul>
+
+<ul id="history">
+
+<li>Compte créé</li>
+
+</ul>
+
 </div>
 
-<div class="card">
-<h3>Carte virtuelle</h3>
+</div>
+
+<div>
+
+<div class="profile-card">
+
+<h3>Profil</h3>
+
+<p id="userName">
+client@example.com
+</p>
+
+<hr style="margin:15px 0;border-color:rgba(255,255,255,.1);">
+
+<h4>Carte virtuelle</h4>
+
 <p>4532 **** **** 9012</p>
-<p>EXP: 12/29</p>
+<p>Expiration : 12/29</p>
+
+</div>
+
 </div>
 
 </div>
 
 </section>
+
+<footer class="footer">
+Bank Demo Premium © 2026
+</footer>
+
+<script>
+
+window.showDashboard = function(email,balance){
+
+document.getElementById("dashboard").style.display="block";
+
+document.getElementById("userName").innerText=email;
+
+document.getElementById("balance").innerText=balance;
+
+}
+
+</script>
 
 </body>
 </html>
