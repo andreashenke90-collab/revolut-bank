@@ -3,28 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revolut Bank</title>
+<title>Revolut Bank 🏦</title>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<!-- Firebase v10 (moderne) -->
+<script type="module">
 
-<!-- PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<!-- Graph -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+import { getFirestore, doc, setDoc, getDoc, updateDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ⚠️ REMPLACE PAR TES INFOS FIREBASE
+const firebaseConfig = {
+  apiKey: "TON_API_KEY",
+  authDomain: "TON_AUTH_DOMAIN",
+  projectId: "TON_PROJECT_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// INSCRIPTION
+window.register = async function(){
+  try{
+    let userCred = await createUserWithEmailAndPassword(auth, email.value, password.value);
+
+    await setDoc(doc(db, "users", userCred.user.uid), {
+      email: email.value,
+      balance: 1000,
+      history: []
+    });
+
+    alert("Compte créé !");
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+// LOGIN
+window.login = async function(){
+  try{
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+// AUTH STATE
+onAuthStateChanged(auth, async (user)=>{
+  if(user){
+    appDiv.style.display="block";
+    loadData(user);
+  }else{
+    appDiv.style.display="none";
+  }
+});
+
+// LOAD DATA
+async function loadData(user){
+  let ref = doc(db, "users", user.uid);
+  let snap = await getDoc(ref);
+  let data = snap.data();
+
+  userName.innerText = user.email;
+  balance.innerText = data.balance;
+
+  history.innerHTML = "";
+  data.history.forEach(h=>{
+    let li = document.createElement("li");
+    li.innerText = h;
+    history.appendChild(li);
+  });
+}
+
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+}
+
+</script>
 
 <style>
-body{background:black;color:white;font-family:Arial;text-align:center;}
+body{background:black;color:white;text-align:center;font-family:Arial;}
 input,button{padding:10px;margin:5px;border-radius:8px;border:none;}
-.bankcard{
-background:linear-gradient(135deg,gold,black);
-padding:20px;border-radius:15px;margin:10px;
-}
-canvas{background:white;margin-top:10px;}
 </style>
+
 </head>
 
 <body>
@@ -38,244 +104,14 @@ canvas{background:white;margin-top:10px;}
 <button onclick="login()">Connexion</button>
 </div>
 
-<div id="app" style="display:none">
-
+<div id="appDiv" style="display:none">
 <h2 id="userName"></h2>
-<h3>💼 Solde: <span id="balance">0</span> €</h3>
+<h3>💼 Solde : <span id="balance">0</span> €</h3>
 
-<button onclick="logout()">🚪 Déconnexion</button>
-<button onclick="exportPDF()">🧾 Relevé PDF</button>
-
-<div class="bankcard" id="card"></div>
-
-<h3>💸 Transfert</h3>
-<input id="to" placeholder="Email destinataire">
-<input id="amountTransfer" type="number" placeholder="Montant">
-<button onclick="transfer()">Envoyer</button>
-
-<h3>💰 Crédit</h3>
-<input id="loanAmount" type="number" placeholder="Montant">
-<input id="months" type="number" placeholder="Durée (mois)">
-<button onclick="requestLoan()">Demander crédit</button>
-
-<canvas id="chart" width="300" height="200"></canvas>
+<button onclick="logout()">Déconnexion</button>
 
 <ul id="history"></ul>
-
 </div>
-
-<script>
-
-// CONFIG FIREBASE (REMPLACE PAR TES INFOS)
-const firebaseConfig = {
-apiKey: "TON_API_KEY",
-authDomain: "TON_AUTH_DOMAIN",
-projectId: "TON_PROJECT_ID",
-};
-
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// INSCRIPTION
-function register(){
-auth.createUserWithEmailAndPassword(email.value,password.value)
-.then(user=>{
-db.collection("users").doc(user.user.uid).set({
-balance:1000,
-history:[],
-email: email.value
-});
-});
-}
-
-// LOGIN
-function login(){
-auth.signInWithEmailAndPassword(email.value,password.value);
-}
-
-// AUTH
-auth.onAuthStateChanged(user=>{
-if(user){
-app.style.display="block";
-loadData(user);
-}else{
-app.style.display="none";
-}
-});
-
-// LOAD DATA
-function loadData(user){
-
-db.collection("users").doc(user.uid).onSnapshot(doc=>{
-let data = doc.data();
-
-balance.innerText = data.balance;
-userName.innerText = user.email;
-
-// 💳 CARTE
-card.innerHTML = `
-Revolut Bank 🏦<br><br>
-**** **** **** ${Math.floor(Math.random()*9000+1000)}
-<br><br>${user.email}
-`;
-
-// HISTORIQUE
-let historyHTML = "";
-(data.history || []).forEach(h=>{
-historyHTML += "<li>"+h+"</li>";
-});
-history.innerHTML = historyHTML;
-
-// GRAPH
-new Chart(chart,{
-type:'bar',
-data:{
-labels:["Solde"],
-datasets:[{data:[data.balance]}]
-}
-});
-
-});
-
-}
-
-// TRANSFERT
-function transfer(){
-let toEmail = to.value;
-let amount = parseInt(amountTransfer.value);
-
-let user = auth.currentUser;
-
-let senderRef = db.collection("users").doc(user.uid);
-
-senderRef.get().then(doc=>{
-let senderData = doc.data();
-
-if(senderData.balance < amount){
-alert("Solde insuffisant");
-return;
-}
-
-db.collection("users")
-.where("email","==",toEmail)
-.get()
-.then(snapshot=>{
-
-if(snapshot.empty){
-alert("Destinataire introuvable");
-return;
-}
-
-let receiverDoc = snapshot.docs[0];
-let receiverRef = db.collection("users").doc(receiverDoc.id);
-
-// UPDATE
-senderRef.update({
-balance: senderData.balance - amount,
-history: [...senderData.history, "Envoyé "+amount+"€"]
-});
-
-receiverRef.update({
-balance: receiverDoc.data().balance + amount,
-history: [...receiverDoc.data().history, "Reçu "+amount+"€"]
-});
-
-alert("Transfert réussi");
-
-});
-
-});
-}
-
-// CRÉDIT
-function requestLoan(){
-
-let amount = parseInt(loanAmount.value);
-let months = parseInt(months.value);
-
-if(amount < 5000 || amount > 3000000000){
-alert("Montant invalide");
-return;
-}
-
-if(amount > 100000000){
-alert("Refus automatique");
-return;
-}
-
-let rate = 0.08;
-let total = amount + (amount * rate);
-let monthly = Math.round(total / months);
-
-let user = auth.currentUser;
-let ref = db.collection("users").doc(user.uid);
-
-ref.get().then(doc=>{
-let data = doc.data();
-
-ref.update({
-balance: data.balance + amount,
-history: [...data.history, "Crédit "+amount+"€"]
-});
-
-generatePDF(user.email, amount, total, monthly, months);
-});
-
-}
-
-// PDF CONTRAT
-function generatePDF(email, amount, total, monthly, months){
-
-const { jsPDF } = window.jspdf;
-let doc = new jsPDF();
-
-doc.text("CONTRAT DE CREDIT - Revolut Bank", 10, 10);
-doc.text("Client: "+email, 10, 20);
-doc.text("Montant: "+amount+"€", 10, 30);
-doc.text("Total: "+total+"€", 10, 40);
-doc.text("Mensualité: "+monthly+"€", 10, 50);
-doc.text("Durée: "+months+" mois", 10, 60);
-
-doc.save("contrat.pdf");
-
-}
-
-// PDF RELEVÉ
-function exportPDF(){
-
-let user = auth.currentUser;
-
-db.collection("users").doc(user.uid).get().then(doc=>{
-
-let data = doc.data();
-
-const { jsPDF } = window.jspdf;
-let pdf = new jsPDF();
-
-pdf.text("RELEVE BANCAIRE - Revolut Bank",10,10);
-pdf.text("Solde: "+data.balance+"€",10,20);
-
-let y=30;
-
-data.history.forEach(h=>{
-pdf.text(h,10,y);
-y+=10;
-});
-
-pdf.save("releve.pdf");
-
-});
-
-}
-
-// LOGOUT
-function logout(){
-auth.signOut();
-}
-
-</script>
 
 </body>
 </html>
