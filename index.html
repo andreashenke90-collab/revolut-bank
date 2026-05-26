@@ -3,19 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Bank GBOJA Premium</title>
+<title>Bank Demo Premium</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
 body{
 background:#050816;
@@ -39,23 +32,7 @@ z-index:-1;
 .navbar{
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:20px 8%;
-}
-
-.logo{
-font-size:28px;
-font-weight:700;
-}
-
-.nav-links{
-display:flex;
-gap:25px;
-}
-
-.nav-links a{
-text-decoration:none;
-color:white;
 }
 
 .hero{
@@ -63,412 +40,107 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:80px 8%;
-min-height:90vh;
+min-height:70vh;
 }
 
-.hero-left{
-max-width:600px;
-}
-
-.hero-left h1{
-font-size:60px;
-line-height:1.1;
-margin-bottom:20px;
-}
-
-.hero-left p{
-opacity:.8;
-margin-bottom:25px;
-}
-
-.btn{
-padding:14px 28px;
-border:none;
-border-radius:14px;
-cursor:pointer;
-font-weight:600;
-background:linear-gradient(90deg,#6c63ff,#00d4ff);
-color:white;
-}
+.hero h1{font-size:50px;}
 
 .card3d{
-width:380px;
-height:230px;
-border-radius:25px;
+width:360px;
+height:220px;
+border-radius:20px;
 padding:25px;
-background:linear-gradient(135deg,#20283d,#0d1325);
-box-shadow:0 25px 50px rgba(0,0,0,.5);
-transform:rotateY(-15deg) rotateX(10deg);
-transition:.4s;
-}
-
-.card3d:hover{
-transform:rotateY(0deg) rotateX(0deg);
-}
-
-.card-chip{
-width:60px;
-height:45px;
-background:gold;
-border-radius:8px;
-margin-bottom:30px;
-}
-
-.card-number{
-font-size:24px;
-letter-spacing:3px;
-margin-bottom:25px;
+background:linear-gradient(135deg,#1c2235,#0d1325);
 }
 
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:25px;
-padding:60px 8%;
+gap:20px;
+padding:40px 8%;
 }
 
 .stat{
 background:rgba(255,255,255,.05);
-padding:30px;
-border-radius:20px;
-backdrop-filter:blur(12px);
+padding:20px;
+border-radius:15px;
 text-align:center;
 }
 
 .auth-section{
-padding:80px 8%;
-display:flex;
-justify-content:center;
-}
-
-.auth-box{
-width:420px;
-background:rgba(255,255,255,.05);
-padding:30px;
-border-radius:20px;
-backdrop-filter:blur(12px);
-}
-
-.auth-box h2{
-margin-bottom:20px;
+padding:50px 8%;
 text-align:center;
 }
 
-input{
-width:100%;
-padding:14px;
-margin-bottom:15px;
-border:none;
-border-radius:12px;
-background:#11192d;
-color:white;
-}
-
-.auth-buttons{
-display:flex;
-gap:10px;
-}
-
-.auth-buttons button{
-flex:1;
-padding:14px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-font-weight:600;
-}
-
-.register{
-background:#00d4ff;
-}
-
-.login{
-background:#6c63ff;
-color:white;
-}
-
-.dashboard{
-display:none;
-padding:60px 8%;
-}
-
-.dashboard-grid{
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:25px;
-}
-
-.balance-card,
-.profile-card,
-.history-card{
+.auth-box{
+max-width:400px;
+margin:auto;
 background:rgba(255,255,255,.05);
 padding:25px;
 border-radius:20px;
 }
 
-.balance{
-font-size:48px;
-font-weight:700;
-margin-top:10px;
-}
-
-.actions{
-margin-top:20px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.action-btn{
-padding:12px 18px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-}
-
-.deposit{
-background:#00d4ff;
-}
-
-.transfer{
-background:#6c63ff;
-color:white;
-}
-
-.logout{
-background:#ff4d4d;
-color:white;
-}
-
-.history-card{
-margin-top:25px;
-}
-
-.history-card ul{
-margin-top:15px;
-list-style:none;
-}
-
-.history-card li{
-padding:12px;
-border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.footer{
-padding:40px;
-text-align:center;
-opacity:.6;
-}
-
-@media(max-width:900px){
-
-.hero{
-flex-direction:column;
-gap:50px;
-text-align:center;
-}
-
-.hero-left h1{
-font-size:42px;
-}
-
-.stats{
-grid-template-columns:1fr;
-}
-
-.dashboard-grid{
-grid-template-columns:1fr;
-}
-
-.card3d{
+input{
 width:100%;
-max-width:380px;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+background:#11192d;
+color:white;
 }
 
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+margin:5px;
 }
+
+.primary{background:#6c63ff;color:white;}
+.secondary{background:#00d4ff;}
+
+.dashboard{
+display:none;
+padding:50px 8%;
+}
+
+.card{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+}
+
+.balance{font-size:40px;}
+
+ul{list-style:none;}
+li{padding:10px;border-bottom:1px solid rgba(255,255,255,.1);}
 
 </style>
+
 </head>
 
 <body>
 
-<nav class="navbar">
-<div class="logo">BANK DEMO</div>
-
-<div class="nav-links">
-<a href="#">Accueil</a>
-<a href="#">Cartes</a>
-<a href="#">Paiements</a>
-<a href="#">Sécurité</a>
+<div class="navbar">
+<h2>Bank Demo</h2>
 </div>
-</nav>
 
 <section class="hero">
-
-<div class="hero-left">
-<h1>La banque numérique nouvelle génération</h1>
-
-<p>
-Gérez vos finances, consultez votre solde,
-effectuez des transferts et utilisez une carte virtuelle.
-</p>
-
-<button class="btn">
-Ouvrir un compte
-</button>
+<div>
+<h1>Banque digitale moderne</h1>
+<p>Gérez votre argent facilement</p>
 </div>
 
 <div class="card3d">
-<div class="card-chip"></div>
-
-<div class="card-number">
-4532 1234 5678 9012
+<h3>Carte virtuelle</h3>
+<br>
+<h2>4532 **** **** 9012</h2>
 </div>
-
-<div>
-Titulaire : CLIENT DEMO
-</div>
-
-<div style="margin-top:15px;">
-12/29
-</div>
-</div>
-
 </section>
 
 <section class="stats">
-
-<div class="stat">
-<h2>10M+</h2>
-<p>Utilisateurs</p>
-</div>
-
-<div class="stat">
-<h2>150+</h2>
-<p>Pays</p>
-</div>
-
-<div class="stat">
-<h2>99.9%</h2>
-<p>Disponibilité</p>
-</div>
-
-</section>
-
-<section class="auth-section">
-
-<div class="auth-box">
-
-<h2>Connexion</h2>
-
-<input id="email" type="email" placeholder="Adresse email">
-
-<input id="password" type="password" placeholder="Mot de passe">
-
-<div class="auth-buttons">
-
-<button class="register" onclick="register()">
-Créer compte
-</button>
-
-<button class="login" onclick="login()">
-Connexion
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-<section id="dashboard" class="dashboard">
-
-<div class="dashboard-grid">
-
-<div>
-
-<div class="balance-card">
-
-<p>Solde disponible</p>
-
-<div class="balance">
-€ <span id="balance">1000</span>
-</div>
-
-<div class="actions">
-
-<button class="action-btn deposit">
-Dépôt
-</button>
-
-<button class="action-btn transfer">
-Transfert
-</button>
-
-<button class="action-btn logout" onclick="logout()">
-Déconnexion
-</button>
-
-</div>
-
-</div>
-
-<div class="history-card">
-
-<h3>Historique</h3>
-
-<ul id="history">
-
-<li>Compte créé</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="profile-card">
-
-<h3>Profil</h3>
-
-<p id="userName">
-client@example.com
-</p>
-
-<hr style="margin:15px 0;border-color:rgba(255,255,255,.1);">
-
-<h4>Carte virtuelle</h4>
-
-<p>4532 **** **** 9012</p>
-<p>Expiration : 12/29</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<footer class="footer">
-Bank Demo Premium © 2026
-</footer>
-
-<script>
-
-window.showDashboard = function(email,balance){
-
-document.getElementById("dashboard").style.display="block";
-
-document.getElementById("userName").innerText=email;
-
-document.getElementById("balance").innerText=balance;
-
-}
-
-</script>
-
-</body>
-</html>
+<div class="stat"><h2>10K+</h2><p>Users</p></div>
