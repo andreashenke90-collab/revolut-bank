@@ -3,241 +3,195 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeoBank Pro</title>
+<title>REVOLUT UK - Demande de prêt</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter;
+}
 
 body{
 background:#0a0f1e;
 color:white;
 display:flex;
-height:100vh;
-overflow:hidden;
-}
-
-/* SIDEBAR */
-.sidebar{
-width:240px;
-background:#0f172a;
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.nav{
-padding:12px;
-border-radius:10px;
-cursor:pointer;
-transition:.2s;
-}
-
-.nav:hover{background:#1e293b}
-
-/* MAIN */
-.main{
-flex:1;
-padding:20px;
-overflow:auto;
-}
-
-/* CARDS */
-.card{
-background:#111827;
-padding:16px;
-border-radius:16px;
-margin-bottom:15px;
-}
-
-/* BIG BALANCE */
-.big{
-font-size:40px;
-font-weight:700;
-}
-
-/* RINGS */
-.rings{
-display:flex;
-gap:10px;
-margin-top:10px;
-flex-wrap:wrap;
-}
-
-.circle{
-width:100px;
-height:100px;
-border-radius:50%;
-background:linear-gradient(135deg,#6c63ff,#00d4ff);
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-/* LOGIN */
-.login{
-position:fixed;
-inset:0;
-display:flex;
 justify-content:center;
 align-items:center;
-background:#0a0f1e;
+min-height:100vh;
+padding:20px;
 }
 
-.box{
-width:340px;
+/* CONTAINER */
+.container{
+width:100%;
+max-width:600px;
 background:#111827;
-padding:20px;
-border-radius:16px;
+border-radius:18px;
+padding:25px;
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* HEADER */
+h1{
+text-align:center;
+font-size:26px;
+margin-bottom:5px;
+}
+
+.subtitle{
+text-align:center;
+color:#9ca3af;
+margin-bottom:20px;
+}
+
+/* FORM */
+.form-group{
+margin-bottom:12px;
+}
+
+label{
+display:block;
+margin-bottom:6px;
+font-size:14px;
+color:#cbd5e1;
 }
 
 input{
 width:100%;
 padding:12px;
-margin:6px 0;
-border-radius:10px;
 border:none;
+border-radius:10px;
 background:#0f172a;
 color:white;
+outline:none;
 }
 
+input:focus{
+border:1px solid #6c63ff;
+}
+
+/* BUTTON */
 button{
-padding:12px;
+width:100%;
+padding:14px;
+margin-top:10px;
 border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
-margin-top:8px;
+background:linear-gradient(135deg,#6c63ff,#00d4ff);
+color:white;
+transition:0.2s;
 }
 
-.primary{background:#6c63ff;color:white;}
-.secondary{background:#00d4ff;color:white;}
-
-.hidden{display:none}
-
-/* MOBILE */
-@media(max-width:768px){
-body{flex-direction:column}
-.sidebar{width:100%;flex-direction:row;overflow:auto}
-.big{font-size:28px}
+button:hover{
+opacity:0.9;
+transform:scale(1.02);
 }
+
+/* RESULT */
+.result{
+margin-top:15px;
+padding:12px;
+background:#0f172a;
+border-radius:10px;
+display:none;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div class="login" id="loginPage">
-<div class="box">
-<h2>NeoBank Pro</h2>
+<div class="container">
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Mot de passe">
+<h1>REVOLUT UK</h1>
+<p class="subtitle">Demande de prêt en ligne</p>
 
-<button class="primary" onclick="register()">Créer compte</button>
-<button class="secondary" onclick="login()">Connexion</button>
-</div>
+<!-- FORM -->
+<div class="form-group">
+<label>Nom</label>
+<input id="nom" type="text" placeholder="Entrez votre nom">
 </div>
 
-<!-- SIDEBAR -->
-<div class="sidebar hidden" id="sidebar">
-<div class="nav" onclick="navigate('home')">🏠 Dashboard</div>
-<div class="nav" onclick="navigate('loan')">💸 Loan</div>
-<div class="nav" onclick="navigate('cards')">💳 Card</div>
-<div class="nav" onclick="logout()">🚪 Logout</div>
+<div class="form-group">
+<label>Prénom</label>
+<input id="prenom" type="text" placeholder="Entrez votre prénom">
 </div>
 
-<!-- MAIN -->
-<div class="main hidden" id="main">
-
-<!-- HOME -->
-<div id="home" class="page">
-
-<div class="card">
-<h2>Balance</h2>
-<div class="big">€ <span id="balance">0</span></div>
+<div class="form-group">
+<label>Âge</label>
+<input id="age" type="number" placeholder="Votre âge">
 </div>
 
-<div class="rings">
-<div class="circle">💳<br><b>Card</b></div>
-<div class="circle">💰<br><b>Cash</b></div>
-<div class="circle">📊<br><b>Loan</b></div>
+<div class="form-group">
+<label>Métier</label>
+<input id="metier" type="text" placeholder="Votre métier">
 </div>
 
-<div class="card">
-<h3>Historique</h3>
-<ul id="history"></ul>
+<div class="form-group">
+<label>Revenu mensuel (€)</label>
+<input id="revenu" type="number" placeholder="Ex: 2500">
 </div>
 
-<div class="card">
-<button class="primary" onclick="deposit()">+50€</button>
-<button class="secondary" onclick="transfer()">-20€</button>
+<div class="form-group">
+<label>Montant du prêt (€)</label>
+<input id="montant" type="number" placeholder="Ex: 5000">
 </div>
+
+<div class="form-group">
+<label>Durée de remboursement (mois)</label>
+<input id="duree" type="number" placeholder="Ex: 24">
+</div>
+
+<button onclick="submitLoan()">Envoyer la demande</button>
+
+<div class="result" id="result"></div>
 
 </div>
 
-<!-- LOAN -->
-<div id="loan" class="page hidden">
+<script>
 
-<div class="card">
-<h2>Loan System</h2>
+function submitLoan(){
 
-<input id="amount" placeholder="Montant">
-<input id="months" placeholder="Durée">
-<input id="income" placeholder="Revenu">
+const nom = document.getElementById("nom").value;
+const prenom = document.getElementById("prenom").value;
+const age = document.getElementById("age").value;
+const metier = document.getElementById("metier").value;
+const revenu = document.getElementById("revenu").value;
+const montant = document.getElementById("montant").value;
+const duree = document.getElementById("duree").value;
 
-<button class="primary" onclick="calcLoan()">Calculer</button>
-<button class="secondary" onclick="sendLoan()">Envoyer</button>
+if(!nom || !prenom || !age || !metier || !revenu || !montant || !duree){
+alert("Veuillez remplir tous les champs");
+return;
+}
 
-<h3 id="result"></h3>
-</div>
+const monthly = (montant / duree).toFixed(2);
 
-</div>
+const result = document.getElementById("result");
+result.style.display = "block";
 
-<!-- CARDS -->
-<div id="cards" class="page hidden">
+result.innerHTML = `
+<strong>Demande envoyée ✔</strong><br><br>
+Nom: ${nom} ${prenom}<br>
+Âge: ${age}<br>
+Métier: ${metier}<br>
+Revenu: ${revenu} €<br>
+Montant: ${montant} €<br>
+Durée: ${duree} mois<br><br>
+💰 Estimation mensualité: <b>${monthly} €</b>
+`;
 
-<div class="card">
-<h2>Virtual Card</h2>
-<h3 id="cardNumber">**** **** **** 1234</h3>
-</div>
+}
 
-</div>
+</script>
 
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-onAuthStateChanged,
-signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import {
-getFirestore,
-doc,
-setDoc,
-getDoc,
-updateDoc,
-arrayUnion,
-collection,
-addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-const firebaseConfig = {
-apiKey:"YOUR_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = get
+</body>
+</html>
