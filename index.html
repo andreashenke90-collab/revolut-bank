@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Ultra Fast</title>
+<title>NeoBank Pro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
 
 body{
@@ -21,7 +20,7 @@ overflow:hidden;
 
 /* SIDEBAR */
 .sidebar{
-width:260px;
+width:240px;
 background:#0f172a;
 padding:20px;
 display:flex;
@@ -41,40 +40,41 @@ transition:.2s;
 /* MAIN */
 .main{
 flex:1;
-padding:25px;
+padding:20px;
 overflow:auto;
 }
 
-/* UI */
+/* CARDS */
 .card{
 background:#111827;
-padding:18px;
-border-radius:14px;
+padding:16px;
+border-radius:16px;
 margin-bottom:15px;
 }
 
+/* BIG BALANCE */
 .big{
-font-size:42px;
+font-size:40px;
 font-weight:700;
 }
 
-/* FINANCE RINGS */
+/* RINGS */
 .rings{
 display:flex;
-gap:12px;
+gap:10px;
+margin-top:10px;
 flex-wrap:wrap;
-margin:15px 0;
 }
 
 .circle{
-width:110px;
-height:110px;
+width:100px;
+height:100px;
 border-radius:50%;
 background:linear-gradient(135deg,#6c63ff,#00d4ff);
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
+justify-content:center;
 }
 
 /* LOGIN */
@@ -88,10 +88,10 @@ background:#0a0f1e;
 }
 
 .box{
-width:360px;
+width:340px;
 background:#111827;
 padding:20px;
-border-radius:14px;
+border-radius:16px;
 }
 
 input{
@@ -116,8 +116,14 @@ margin-top:8px;
 .primary{background:#6c63ff;color:white;}
 .secondary{background:#00d4ff;color:white;}
 
-.hidden{display:none;}
+.hidden{display:none}
 
+/* MOBILE */
+@media(max-width:768px){
+body{flex-direction:column}
+.sidebar{width:100%;flex-direction:row;overflow:auto}
+.big{font-size:28px}
+}
 </style>
 
 </head>
@@ -127,14 +133,13 @@ margin-top:8px;
 <!-- LOGIN -->
 <div class="login" id="loginPage">
 <div class="box">
-<h2>Fintech Ultra Fast</h2>
+<h2>NeoBank Pro</h2>
 
 <input id="email" placeholder="Email">
 <input id="password" type="password" placeholder="Mot de passe">
 
 <button class="primary" onclick="register()">Créer compte</button>
 <button class="secondary" onclick="login()">Connexion</button>
-
 </div>
 </div>
 
@@ -142,7 +147,7 @@ margin-top:8px;
 <div class="sidebar hidden" id="sidebar">
 <div class="nav" onclick="navigate('home')">🏠 Dashboard</div>
 <div class="nav" onclick="navigate('loan')">💸 Loan</div>
-<div class="nav" onclick="navigate('cards')">💳 Cards</div>
+<div class="nav" onclick="navigate('cards')">💳 Card</div>
 <div class="nav" onclick="logout()">🚪 Logout</div>
 </div>
 
@@ -158,7 +163,7 @@ margin-top:8px;
 </div>
 
 <div class="rings">
-<div class="circle">💳<br><b>Credit</b></div>
+<div class="circle">💳<br><b>Card</b></div>
 <div class="circle">💰<br><b>Cash</b></div>
 <div class="circle">📊<br><b>Loan</b></div>
 </div>
@@ -189,7 +194,6 @@ margin-top:8px;
 <button class="secondary" onclick="sendLoan()">Envoyer</button>
 
 <h3 id="result"></h3>
-
 </div>
 
 </div>
@@ -198,8 +202,8 @@ margin-top:8px;
 <div id="cards" class="page hidden">
 
 <div class="card">
-<h2>Card</h2>
-<h3 id="cardNumber">----</h3>
+<h2>Virtual Card</h2>
+<h3 id="cardNumber">**** **** **** 1234</h3>
 </div>
 
 </div>
@@ -224,68 +228,16 @@ setDoc,
 getDoc,
 updateDoc,
 arrayUnion,
-addDoc,
-collection
+collection,
+addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* ================= FIREBASE ================= */
-const app = initializeApp({
+/* FIREBASE CONFIG */
+const firebaseConfig = {
 apiKey:"YOUR_KEY",
 authDomain:"YOUR_DOMAIN",
 projectId:"YOUR_ID"
-});
-
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* ================= STATE ================= */
-let state = {
-user:null,
-data:null
 };
 
-/* ================= NAV (FAST) ================= */
-window.navigate = (page) => {
-
-document.querySelectorAll(".page")
-.forEach(p => p.classList.add("hidden"));
-
-document.getElementById(page).classList.remove("hidden");
-
-state.page = page;
-};
-
-/* ================= AUTH ================= */
-window.register = async () => {
-await createUserWithEmailAndPassword(auth,email.value,password.value);
-
-await setDoc(doc(db,"users",auth.currentUser.uid),{
-email:email.value,
-balance:1000,
-card:"4532 ****",
-history:["Account created"]
-});
-};
-
-window.login = async () => {
-await signInWithEmailAndPassword(auth,email.value,password.value);
-};
-
-window.logout = () => signOut(auth);
-
-/* ================= AUTH STATE ================= */
-onAuthStateChanged(auth, async(user)=>{
-if(user){
-
-state.user = user;
-
-loginPage.classList.add("hidden");
-sidebar.classList.remove("hidden");
-main.classList.remove("hidden");
-
-loadUser(user);
-}
-});
-
-/* ================= LOAD (OPTIMIZED) ================= */
-async function
+const app = initializeApp(firebaseConfig);
+const auth = get
