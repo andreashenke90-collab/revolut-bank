@@ -9,15 +9,15 @@
 
 <style>
 
-*{
+html, body{
+height:100%;
 margin:0;
 padding:0;
-box-sizing:border-box;
 font-family:Inter;
 }
 
+/* 🌍 BACKGROUND IMAGE FIXÉ */
 body{
-min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -26,66 +26,58 @@ overflow:hidden;
 color:white;
 }
 
-/* 🏦 BACKGROUND IMAGE FINANCE */
-body::before{
-content:"";
+/* IMAGE FOND */
+.bg{
 position:absolute;
 inset:0;
-background-image:url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1600&q=80");
+background-image:url("https://images.unsplash.com/photo-1565372914081-f0f2c4d4a2d2?auto=format&fit=crop&w=1600&q=80");
 background-size:cover;
 background-position:center;
-filter:brightness(0.35) blur(1px);
 transform:scale(1.05);
 z-index:0;
 }
 
 /* DARK OVERLAY */
-body::after{
-content:"";
+.overlay{
 position:absolute;
 inset:0;
-background:linear-gradient(135deg,rgba(10,15,30,0.9),rgba(10,15,30,0.6));
-z-index:0;
+background:rgba(10,15,30,0.75);
+z-index:1;
 }
 
 /* CONTAINER */
 .container{
 position:relative;
-z-index:1;
+z-index:2;
 width:100%;
-max-width:620px;
-background:rgba(17,24,39,0.85);
+max-width:600px;
+background:rgba(17,24,39,0.88);
 backdrop-filter:blur(18px);
-border:1px solid rgba(255,255,255,0.08);
 border-radius:18px;
-padding:28px;
-box-shadow:0 25px 60px rgba(0,0,0,0.6);
+padding:25px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 20px 60px rgba(0,0,0,0.6);
 }
 
 /* TITLE */
 h1{
 text-align:center;
-font-size:28px;
-font-weight:700;
+margin-bottom:5px;
 }
 
 .subtitle{
 text-align:center;
 color:#cbd5e1;
 margin-bottom:18px;
-font-size:14px;
 }
 
 /* FORM */
-.form-group{
-margin-bottom:12px;
-}
-
 label{
-display:block;
-margin-bottom:6px;
 font-size:13px;
 color:#cbd5e1;
+display:block;
+margin-top:10px;
+margin-bottom:5px;
 }
 
 input{
@@ -96,40 +88,26 @@ border:none;
 background:#0f172a;
 color:white;
 outline:none;
-transition:0.2s;
 }
 
-input:focus{
-box-shadow:0 0 10px rgba(108,99,255,0.4);
-}
-
-/* BUTTON */
 button{
 width:100%;
 padding:14px;
+margin-top:15px;
 border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
-margin-top:10px;
 background:linear-gradient(135deg,#6c63ff,#00d4ff);
 color:white;
-transition:0.2s;
 }
 
-button:hover{
-transform:scale(1.02);
-opacity:0.95;
-}
-
-/* RESULT */
 .result{
 margin-top:15px;
 padding:12px;
 background:#0f172a;
 border-radius:10px;
 display:none;
-border:1px solid rgba(255,255,255,0.08);
 }
 
 </style>
@@ -138,47 +116,36 @@ border:1px solid rgba(255,255,255,0.08);
 
 <body>
 
+<div class="bg"></div>
+<div class="overlay"></div>
+
 <div class="container">
 
 <h1>REVOLUT UK</h1>
-<p class="subtitle">Demande de prêt - Crédit personnel sécurisé</p>
+<p class="subtitle">Demande de prêt sécurisée</p>
 
-<div class="form-group">
 <label>Nom</label>
-<input id="nom" placeholder="Votre nom">
-</div>
+<input id="nom">
 
-<div class="form-group">
 <label>Prénom</label>
-<input id="prenom" placeholder="Votre prénom">
-</div>
+<input id="prenom">
 
-<div class="form-group">
 <label>Âge</label>
-<input id="age" type="number" placeholder="Ex: 25">
-</div>
+<input id="age" type="number">
 
-<div class="form-group">
 <label>Métier</label>
-<input id="metier" placeholder="Votre métier">
-</div>
+<input id="metier">
 
-<div class="form-group">
-<label>Revenu mensuel (€)</label>
-<input id="revenu" type="number" placeholder="Ex: 2500">
-</div>
+<label>Revenu mensuel</label>
+<input id="revenu" type="number">
 
-<div class="form-group">
-<label>Montant du prêt (€)</label>
-<input id="montant" type="number" placeholder="Ex: 5000">
-</div>
+<label>Montant du prêt</label>
+<input id="montant" type="number">
 
-<div class="form-group">
-<label>Durée de remboursement (mois)</label>
-<input id="duree" type="number" placeholder="Ex: 24">
-</div>
+<label>Durée (mois)</label>
+<input id="duree" type="number">
 
-<button onclick="submitLoan()">Envoyer la demande</button>
+<button onclick="submitLoan()">Envoyer</button>
 
 <div class="result" id="result"></div>
 
@@ -188,33 +155,30 @@ border:1px solid rgba(255,255,255,0.08);
 
 function submitLoan(){
 
-const nom = document.getElementById("nom").value;
-const prenom = document.getElementById("prenom").value;
-const age = document.getElementById("age").value;
-const metier = document.getElementById("metier").value;
-const revenu = document.getElementById("revenu").value;
-const montant = document.getElementById("montant").value;
-const duree = document.getElementById("duree").value;
+const nom=document.getElementById("nom").value;
+const prenom=document.getElementById("prenom").value;
+const age=document.getElementById("age").value;
+const metier=document.getElementById("metier").value;
+const revenu=document.getElementById("revenu").value;
+const montant=document.getElementById("montant").value;
+const duree=document.getElementById("duree").value;
 
-if(!nom || !prenom || !age || !metier || !revenu || !montant || !duree){
-alert("Veuillez remplir tous les champs");
+if(!nom||!prenom||!age||!metier||!revenu||!montant||!duree){
+alert("Remplis tous les champs");
 return;
 }
 
-const mensualite = (montant / duree).toFixed(2);
+let mensualite=(montant/duree).toFixed(2);
 
-const result = document.getElementById("result");
-result.style.display = "block";
+let result=document.getElementById("result");
+result.style.display="block";
 
-result.innerHTML = `
-<strong>✔ Demande envoyée</strong><br><br>
-Nom: ${nom} ${prenom}<br>
-Âge: ${age}<br>
-Métier: ${metier}<br>
-Revenu: ${revenu} €<br>
-Montant: ${montant} €<br>
-Durée: ${duree} mois<br><br>
-💰 Mensualité estimée: <b>${mensualite} €</b>
+result.innerHTML=`
+✔ Demande envoyée<br><br>
+${nom} ${prenom}<br>
+Montant: ${montant}€<br>
+Durée: ${duree} mois<br>
+💰 Mensualité: <b>${mensualite}€</b>
 `;
 
 }
