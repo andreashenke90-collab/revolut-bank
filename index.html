@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>REVOLUT UK - Demande de prêt</title>
+<title>REVOLUT UK - Loan</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -17,30 +17,52 @@ font-family:Inter;
 }
 
 body{
-background:#0a0f1e;
-color:white;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
-padding:20px;
+background:#0a0f1e;
+overflow:hidden;
+position:relative;
+color:white;
 }
 
-/* CONTAINER */
+/* 🌌 FINTECH BACKGROUND */
+.bg{
+position:absolute;
+inset:0;
+background:radial-gradient(circle at 20% 20%, #6c63ff33, transparent 40%),
+           radial-gradient(circle at 80% 30%, #00d4ff33, transparent 40%),
+           radial-gradient(circle at 50% 80%, #ff3d7733, transparent 40%);
+filter:blur(20px);
+z-index:0;
+animation:move 12s infinite alternate;
+}
+
+@keyframes move{
+0%{transform:scale(1) translateY(0)}
+100%{transform:scale(1.1) translateY(-20px)}
+}
+
+/* CARD */
 .container{
+position:relative;
+z-index:1;
 width:100%;
-max-width:600px;
-background:#111827;
+max-width:620px;
+background:rgba(17,24,39,0.85);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.08);
 border-radius:18px;
-padding:25px;
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
+padding:28px;
+box-shadow:0 20px 60px rgba(0,0,0,0.6);
 }
 
-/* HEADER */
+/* TITLE */
 h1{
 text-align:center;
-font-size:26px;
-margin-bottom:5px;
+font-size:28px;
+font-weight:700;
 }
 
 .subtitle{
@@ -57,41 +79,43 @@ margin-bottom:12px;
 label{
 display:block;
 margin-bottom:6px;
-font-size:14px;
+font-size:13px;
 color:#cbd5e1;
 }
 
 input{
 width:100%;
 padding:12px;
-border:none;
 border-radius:10px;
+border:none;
 background:#0f172a;
 color:white;
 outline:none;
+transition:0.2s;
 }
 
 input:focus{
 border:1px solid #6c63ff;
+box-shadow:0 0 10px #6c63ff33;
 }
 
 /* BUTTON */
 button{
 width:100%;
 padding:14px;
-margin-top:10px;
 border:none;
 border-radius:10px;
 cursor:pointer;
 font-weight:600;
+margin-top:10px;
 background:linear-gradient(135deg,#6c63ff,#00d4ff);
 color:white;
 transition:0.2s;
 }
 
 button:hover{
-opacity:0.9;
 transform:scale(1.02);
+opacity:0.95;
 }
 
 /* RESULT */
@@ -101,6 +125,7 @@ padding:12px;
 background:#0f172a;
 border-radius:10px;
 display:none;
+border:1px solid rgba(255,255,255,0.05);
 }
 
 </style>
@@ -109,30 +134,33 @@ display:none;
 
 <body>
 
+<!-- BACKGROUND -->
+<div class="bg"></div>
+
+<!-- FORM -->
 <div class="container">
 
 <h1>REVOLUT UK</h1>
-<p class="subtitle">Demande de prêt en ligne</p>
+<p class="subtitle">Demande de prêt en ligne sécurisée</p>
 
-<!-- FORM -->
 <div class="form-group">
 <label>Nom</label>
-<input id="nom" type="text" placeholder="Entrez votre nom">
+<input id="nom" placeholder="Votre nom">
 </div>
 
 <div class="form-group">
 <label>Prénom</label>
-<input id="prenom" type="text" placeholder="Entrez votre prénom">
+<input id="prenom" placeholder="Votre prénom">
 </div>
 
 <div class="form-group">
 <label>Âge</label>
-<input id="age" type="number" placeholder="Votre âge">
+<input id="age" type="number" placeholder="Ex: 25">
 </div>
 
 <div class="form-group">
 <label>Métier</label>
-<input id="metier" type="text" placeholder="Votre métier">
+<input id="metier" placeholder="Votre métier">
 </div>
 
 <div class="form-group">
@@ -173,20 +201,20 @@ alert("Veuillez remplir tous les champs");
 return;
 }
 
-const monthly = (montant / duree).toFixed(2);
+const mensualite = (montant / duree).toFixed(2);
 
 const result = document.getElementById("result");
 result.style.display = "block";
 
 result.innerHTML = `
-<strong>Demande envoyée ✔</strong><br><br>
+<strong>✔ Demande envoyée avec succès</strong><br><br>
 Nom: ${nom} ${prenom}<br>
 Âge: ${age}<br>
 Métier: ${metier}<br>
 Revenu: ${revenu} €<br>
 Montant: ${montant} €<br>
 Durée: ${duree} mois<br><br>
-💰 Estimation mensualité: <b>${monthly} €</b>
+💰 Mensualité estimée: <b>${mensualite} €</b>
 `;
 
 }
