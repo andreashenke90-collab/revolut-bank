@@ -11,11 +11,15 @@
 
 <style>
 
-html,body{
+*{
 margin:0;
 padding:0;
-height:100%;
+box-sizing:border-box;
 font-family:Inter,sans-serif;
+}
+
+html,body{
+height:100%;
 overflow:hidden;
 }
 
@@ -31,28 +35,36 @@ position:relative;
 /* BACKGROUND */
 
 .bg{
-position:absolute;
+position:fixed;
 inset:0;
-background-image:url("a_sleek_high_contrast_3d_product_render_abstrac.png");
+
+background-image:
+linear-gradient(
+rgba(0,0,0,.45),
+rgba(0,0,0,.78)
+),
+url("/background.jpg");
+
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
-transform:scale(1.03);
+
+transform:scale(1.02);
+
 z-index:0;
 }
 
-/* OVERLAY */
+/* GLASS OVERLAY */
 
 .overlay{
 position:absolute;
 inset:0;
+
 background:
-linear-gradient(
-to bottom,
-rgba(0,0,0,.45),
-rgba(0,0,0,.75)
-);
-backdrop-filter:blur(2px);
+radial-gradient(circle at top left,
+rgba(255,255,255,.04),
+transparent 30%);
+
 z-index:1;
 }
 
@@ -61,12 +73,16 @@ z-index:1;
 .container{
 position:relative;
 z-index:2;
-width:90%;
+
+width:92%;
 max-width:560px;
+
 padding:32px;
+
 border-radius:28px;
 
-background:rgba(17,24,39,.72);
+background:
+rgba(15,23,42,.68);
 
 backdrop-filter:blur(24px);
 
@@ -74,14 +90,42 @@ border:1px solid rgba(255,255,255,.08);
 
 box-shadow:
 0 0 0 1px rgba(255,255,255,.04),
-0 30px 80px rgba(0,0,0,.55);
+0 30px 80px rgba(0,0,0,.65);
 }
 
 /* TITLE */
 
+.logo{
+width:68px;
+height:68px;
+
+margin:auto;
+margin-bottom:18px;
+
+border-radius:22px;
+
+background:
+linear-gradient(
+135deg,
+#ffffff,
+#7c7c7c
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:24px;
+font-weight:700;
+
+color:black;
+
+box-shadow:
+0 10px 35px rgba(255,255,255,.18);
+}
+
 h1{
 text-align:center;
-margin:0;
 font-size:34px;
 font-weight:700;
 }
@@ -89,8 +133,10 @@ font-weight:700;
 .subtitle{
 text-align:center;
 margin-top:10px;
-margin-bottom:30px;
+margin-bottom:34px;
+
 color:#cbd5e1;
+font-size:15px;
 }
 
 /* FORM */
@@ -101,75 +147,132 @@ margin-bottom:18px;
 
 label{
 display:block;
-margin-bottom:8px;
+margin-bottom:10px;
 font-size:14px;
-color:#cbd5e1;
+color:#e2e8f0;
 }
 
 input{
 width:100%;
-padding:15px;
+
+padding:16px;
+
 border:none;
-border-radius:16px;
-background:rgba(15,23,42,.95);
+border-radius:18px;
+
+background:
+rgba(2,6,23,.92);
+
 color:white;
+
 font-size:15px;
+
 transition:.25s;
-box-sizing:border-box;
 }
 
 input:focus{
 outline:none;
-box-shadow:0 0 0 4px rgba(255,255,255,.08);
-transform:translateY(-1px);
+
+transform:translateY(-2px);
+
+box-shadow:
+0 0 0 4px rgba(255,255,255,.06),
+0 10px 25px rgba(0,0,0,.35);
 }
 
 /* BUTTON */
 
 button{
 width:100%;
-padding:16px;
+
+padding:18px;
+
+margin-top:10px;
+
 border:none;
-border-radius:18px;
+border-radius:20px;
+
 cursor:pointer;
+
+font-size:16px;
+font-weight:700;
 
 background:
 linear-gradient(
 135deg,
 #ffffff,
-#d4d4d8
+#cfcfcf
 );
 
 color:black;
-
-font-size:16px;
-font-weight:700;
 
 transition:.3s;
 }
 
 button:hover{
 transform:translateY(-2px);
-box-shadow:0 15px 35px rgba(255,255,255,.15);
+
+box-shadow:
+0 15px 35px rgba(255,255,255,.18);
 }
 
 /* RESULT */
 
 .result{
 display:none;
-margin-top:22px;
-padding:20px;
-border-radius:18px;
 
-background:rgba(15,23,42,.95);
+margin-top:24px;
 
-border:1px solid rgba(255,255,255,.05);
+padding:22px;
+
+border-radius:20px;
+
+background:
+rgba(2,6,23,.92);
+
+border:
+1px solid rgba(255,255,255,.05);
+
+animation:fade .4s ease;
 }
 
 .result strong{
-font-size:24px;
 display:block;
-margin-top:10px;
+
+margin-top:12px;
+
+font-size:28px;
+
+color:white;
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.container{
+padding:24px;
+border-radius:24px;
+}
+
+h1{
+font-size:28px;
+}
+
 }
 
 </style>
@@ -181,6 +284,10 @@ margin-top:10px;
 <div class="overlay"></div>
 
 <div class="container">
+
+<div class="logo">
+R
+</div>
 
 <h1>REVOLUT UK</h1>
 
@@ -224,7 +331,7 @@ Demande de prêt sécurisée
 </div>
 
 <button onclick="submitLoan()">
-Envoyer
+Envoyer la demande
 </button>
 
 <div class="result" id="result"></div>
@@ -236,6 +343,7 @@ Envoyer
 function submitLoan(){
 
 const nom=document.getElementById("nom").value.trim();
+
 const prenom=document.getElementById("prenom").value.trim();
 
 const montant=parseFloat(
@@ -253,8 +361,13 @@ alert("Veuillez remplir tous les champs.");
 return;
 }
 
+/* Taux */
+
 const tauxAnnuel=7;
+
 const tauxMensuel=tauxAnnuel/100/12;
+
+/* Calcul */
 
 const mensualite=
 (
@@ -272,14 +385,21 @@ const result=document.getElementById("result");
 result.style.display="block";
 
 result.innerHTML=`
-<h2>Simulation validée</h2>
+
+<h2>
+Simulation validée
+</h2>
+
+<br>
 
 <p>
 ${prenom} ${nom}
 </p>
 
+<br>
+
 <p>
-Montant :
+Montant demandé :
 <b>${montant.toLocaleString()} €</b>
 </p>
 
@@ -288,9 +408,15 @@ Durée :
 <b>${duree} mois</b>
 </p>
 
+<p>
+Taux :
+<b>${tauxAnnuel}%</b>
+</p>
+
 <strong>
 ${mensualite.toFixed(2)} €/mois
 </strong>
+
 `;
 
 }
