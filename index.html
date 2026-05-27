@@ -21,41 +21,45 @@ min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#0a0f1e;
-overflow:hidden;
 position:relative;
+overflow:hidden;
 color:white;
 }
 
-/* 🌌 FINTECH BACKGROUND */
-.bg{
+/* 🏦 BACKGROUND IMAGE FINANCE */
+body::before{
+content:"";
 position:absolute;
 inset:0;
-background:radial-gradient(circle at 20% 20%, #6c63ff33, transparent 40%),
-           radial-gradient(circle at 80% 30%, #00d4ff33, transparent 40%),
-           radial-gradient(circle at 50% 80%, #ff3d7733, transparent 40%);
-filter:blur(20px);
+background-image:url("https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1600&q=80");
+background-size:cover;
+background-position:center;
+filter:brightness(0.35) blur(1px);
+transform:scale(1.05);
 z-index:0;
-animation:move 12s infinite alternate;
 }
 
-@keyframes move{
-0%{transform:scale(1) translateY(0)}
-100%{transform:scale(1.1) translateY(-20px)}
+/* DARK OVERLAY */
+body::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(10,15,30,0.9),rgba(10,15,30,0.6));
+z-index:0;
 }
 
-/* CARD */
+/* CONTAINER */
 .container{
 position:relative;
 z-index:1;
 width:100%;
 max-width:620px;
 background:rgba(17,24,39,0.85);
-backdrop-filter:blur(20px);
+backdrop-filter:blur(18px);
 border:1px solid rgba(255,255,255,0.08);
 border-radius:18px;
 padding:28px;
-box-shadow:0 20px 60px rgba(0,0,0,0.6);
+box-shadow:0 25px 60px rgba(0,0,0,0.6);
 }
 
 /* TITLE */
@@ -67,8 +71,9 @@ font-weight:700;
 
 .subtitle{
 text-align:center;
-color:#9ca3af;
-margin-bottom:20px;
+color:#cbd5e1;
+margin-bottom:18px;
+font-size:14px;
 }
 
 /* FORM */
@@ -95,8 +100,7 @@ transition:0.2s;
 }
 
 input:focus{
-border:1px solid #6c63ff;
-box-shadow:0 0 10px #6c63ff33;
+box-shadow:0 0 10px rgba(108,99,255,0.4);
 }
 
 /* BUTTON */
@@ -125,7 +129,7 @@ padding:12px;
 background:#0f172a;
 border-radius:10px;
 display:none;
-border:1px solid rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
 }
 
 </style>
@@ -134,14 +138,10 @@ border:1px solid rgba(255,255,255,0.05);
 
 <body>
 
-<!-- BACKGROUND -->
-<div class="bg"></div>
-
-<!-- FORM -->
 <div class="container">
 
 <h1>REVOLUT UK</h1>
-<p class="subtitle">Demande de prêt en ligne sécurisée</p>
+<p class="subtitle">Demande de prêt - Crédit personnel sécurisé</p>
 
 <div class="form-group">
 <label>Nom</label>
@@ -207,7 +207,7 @@ const result = document.getElementById("result");
 result.style.display = "block";
 
 result.innerHTML = `
-<strong>✔ Demande envoyée avec succès</strong><br><br>
+<strong>✔ Demande envoyée</strong><br><br>
 Nom: ${nom} ${prenom}<br>
 Âge: ${age}<br>
 Métier: ${metier}<br>
